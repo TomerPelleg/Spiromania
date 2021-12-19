@@ -5,7 +5,7 @@ import math
 
 def main():
 
-    func = [ 3*x**2+2 for x in np.arange(-math.pi, math.pi, 0.02524)]
+    func = [ 3*x**2+2 for x in np.arange(-math.pi, math.pi, 0.001)]
     Display(func)
 
 

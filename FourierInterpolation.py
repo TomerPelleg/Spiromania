@@ -30,7 +30,7 @@ def fourier_sum(function, N):
     length = len(function)       #  = fourier_result[2] -- used to be function
     jump_size = 2 * PI / length
     res = [sum(coeffs[0][i] * math.cos(i * (-PI + k * jump_size)) * jump_size * (length+1) / (length * ((i==0)+1)) + coeffs[1][i] * math.sin(
-        i * (-PI + k * jump_size)) * jump_size * (length+1)/ length  for i in range(N + 1)) for k in range(1,length)]
+        i * (-PI + k * jump_size)) * jump_size * (length+1)/ length  for i in range(N)) for k in range(length)]
     return res
 
 

@@ -36,7 +36,7 @@ def Display(func):
         ax=axfreq,
         label='N [Num]',
         valmin=1,
-        valmax=50,
+        valmax=1000,
         valinit=init_N,
     )
     freq_slider.on_changed(UpdateDraw)
