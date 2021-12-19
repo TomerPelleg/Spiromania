@@ -1,15 +1,12 @@
 from Display import *
 import numpy as np
-import math
+from math import *
 
 
 def main():
+    func = [sin(1/exp(x-1)) for x in np.arange(-pi, pi, 0.005)]
+    display(func)
 
-    func = [ 3*x**2+2 for x in np.arange(-math.pi, math.pi, 0.001)]
-    Display(func)
 
-
-# Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     main()
-
