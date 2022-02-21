@@ -1,10 +1,6 @@
 # Spiromania
 
-### Haifa University Project
-
-### 2021-2022
-
-### by Tomer and Lael
+### Project by Tomer and Lael, University of Haifa  (2021-22)
 
 A spirograph is a wonderful toy, which is composed of just 2 circles but can draw mesmerising patterns!
 
