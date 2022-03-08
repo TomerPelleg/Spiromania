@@ -4,7 +4,6 @@ from copy import deepcopy
 import numpy as np
 import pygame
 from spiro import Spiro
-import scipy
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -12,6 +11,7 @@ BLACK = (0, 0, 0)
 PI = cmath.pi
 width, height = (1000, 700)
 start = np.asarray((width // 2, height // 2))
+
 
 def create_function(points):
 	xs = np.linspace(-1*PI, PI, np.shape(points)[0])
@@ -42,7 +42,7 @@ def main():
 
 	ps = np.full((10000, 2), 0, dtype=float)
 	i = 0
-	k = 100
+	k = 50
 	add_to_arr = False
 	r = pygame.Rect(0, 0, 10, 10)
 	while True:
@@ -53,17 +53,16 @@ def main():
 				return
 
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_RETURN:
-					# ps = np.array((np.arange(-10,10), [0]*20)).T
+				if event.key == pygame.K_RETURN:		# IF ENTER IS PRESSED
 					ps = ps[:i]-start
 					xs, ys = create_function(ps)
 					coeffs = calc_coeffs(xs, ys, k)
-					# coeffs = np.array([0 if num(ki)%2==0 else -1.j/PI*(-math.cos(num(ki)*xs[ki])/num(ki)+1/num(ki)) for ki in range(k)], dtype=complex)
+					speeds = np.array([num(ki) for ki in range(k)])
+					s = Spiro(speeds, coeffs, screen)
 
 					rs = np.array(coeffs, dtype=int) ** 2 + np.array(-1j * coeffs, dtype=int) ** 2
-					speeds = np.array([num(ki) for ki in range(k)])
+					# s = OldSpiro(, [150,-35], , screen)
 
-					s = Spiro(rs, np.zeros(len(speeds)), speeds, screen, coeffs)
 					pygame.display.quit()
 					pygame.quit()
 					return
