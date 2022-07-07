@@ -4,7 +4,7 @@
 
 A spirograph is a wonderful toy, which is composed of just 2 circles but can draw mesmerising patterns!
 
-Here we explore some of the hidden potential which comes from a digital implementation of a spirograph:
+Here we explore some of the hidden potential which comes from a computerized implementation of a spirograph:
 
 * More than one circle within a circle! (done)
 * Visualise fourier transforms with spirographs! (done)
