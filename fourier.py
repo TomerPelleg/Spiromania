@@ -4,6 +4,7 @@ from copy import deepcopy
 import numpy as np
 import pygame
 from spiro import Spiro
+from button import Button
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -91,7 +92,11 @@ def fourier_main():
 				print(pos)
 				ps[i] = pos
 				i += 1
-		# pygame.draw.lines(screen, (0,0,0), True, ps[:i], width=5)
+
+		pygame.display.update()
+
+
+# pygame.draw.lines(screen, (0,0,0), True, ps[:i], width=5)
 
 
 if __name__ == '__main__':

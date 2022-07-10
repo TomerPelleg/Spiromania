@@ -25,9 +25,9 @@ hexagon = [(0,0), (6,0), (9,5.2), (6, 10.4), (0,10.4), (-3, 5.2)]
 
 
 def poly_main():
-	inside_shape = np.asarray(create_regular_polygon(8, 3),
+	inside_shape = np.asarray(create_regular_polygon(4, 3),
 					dtype=np.float64)*10 + (300,300)
-	outside_shape = np.asarray(create_regular_polygon(13, 3),
+	outside_shape = np.asarray(create_regular_polygon(7, 3),
 					dtype=np.float64)*10 + (300,300)
 	inside_Shape = Shape(inside_shape)
 	outside_Shape = Shape(outside_shape)
@@ -73,7 +73,7 @@ def poly_main():
 		outside_Shape.draw_shape(screen)
 		button1.prepare()
 		pygame.display.update()
-		clock.tick(100)
+		clock.tick(500)
 		cntr += 1
 
 	# while True:

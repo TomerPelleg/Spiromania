@@ -3,6 +3,7 @@ import numpy as np
 from math import cos, sin, pi
 from time import sleep
 import cmath
+from button import Button
 
 # POSITIVE RADIUS MEANS OUTSIDE
 
@@ -40,13 +41,17 @@ class Spiro:
 		trace = np.full((trace_l, 2), (0, 0))  # point
 		t, i = 0, 0
 
+		test_button = Button(pos = (0, 0), size =(200, 100), color = (15,15,200), text = "Me!", elevation=5)
+
 		while True:
 			for event in pygame.event.get():
+				test_button.process(event, screen)
 				if event.type == pygame.QUIT:
 					pygame.display.quit()
 					pygame.quit()
 					return
 
+			test_button.draw(screen)
 			pygame.display.update()
 			self.screen.fill(WHITE)
 
@@ -70,7 +75,7 @@ class Spiro:
 			t += 1e-5
 			i = (i + 1) % trace_l
 
-	# def new_draw_spiro(self, centers, fixed_points, alpha=0.5):
+# def new_draw_spiro(self, centers, fixed_points, alpha=0.5):
 	# 	dist = (centers - fixed_points) ** 2
 	# 	dist = (dist[:, 0] + dist[:, 1]) ** 0.5
 	# 	radii = dist
