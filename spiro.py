@@ -3,7 +3,7 @@ import numpy as np
 from math import cos, sin, pi
 from time import sleep
 import cmath
-from button import Button
+from button import Button, TextButton, IntTextButton, BoolButton
 
 # POSITIVE RADIUS MEANS OUTSIDE
 
@@ -41,17 +41,21 @@ class Spiro:
 		trace = np.full((trace_l, 2), (0, 0))  # point
 		t, i = 0, 0
 
-		test_button = Button(pos = (0, 0), size =(200, 100), color = (15,15,200), text = "Me!", elevation=5)
-
+		text_test_button = TextButton(pos = (0, 10), size =(200, 100), color = (15,15,100), text = "Me Text!", elevation=5)
+		test_int_button = IntTextButton(pos = (300, 10), size =(200, 100), color = (15,100,100), text = "Me Int!", elevation=5)
+		test_bool_button = BoolButton(pos = (600, 10), size =(200, 100), color = (100,15,100), text = "Me Silent!", elevation=5)
+		buttons = [test_int_button, test_bool_button, text_test_button]
 		while True:
+			for button in buttons:
+				button.check_hover()
 			for event in pygame.event.get():
-				test_button.process(event, screen)
+				for button in buttons:
+					button.process_clicked(event, screen)
 				if event.type == pygame.QUIT:
 					pygame.display.quit()
 					pygame.quit()
 					return
 
-			test_button.draw(screen)
 			pygame.display.update()
 			self.screen.fill(WHITE)
 
@@ -74,6 +78,9 @@ class Spiro:
 				pygame.draw.lines(self.screen, RED, False, trace[:i], width=2)
 			t += 1e-5
 			i = (i + 1) % trace_l
+
+			for button in buttons:
+				button.draw(screen)
 
 # def new_draw_spiro(self, centers, fixed_points, alpha=0.5):
 	# 	dist = (centers - fixed_points) ** 2
