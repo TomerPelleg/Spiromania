@@ -143,7 +143,7 @@ class BoolButton(Button):
             return False
 
 class Slider:
-    def __init__(self, pos, length, min_val=5, max_val=50, circ_color='#FF0000', bar_color = '#354B5E', radius = 10):
+    def __init__(self, pos, length, min_val=5, max_val=50, start_val = 5, circ_color='#FF0000', bar_color = '#354B5E', radius = 10):
         self.nice_font = pygame.font.SysFont('Comic Sans MS', 15)
         self.x = pos[0]
         self.y = pos[1]
@@ -152,8 +152,8 @@ class Slider:
         self.max_val = max_val
         self.circ_color = circ_color
         self.bar_color = bar_color
-        self.val = min_val
-        self.circle_center = (pos[0], pos[1]+radius/2)
+        self.val = start_val
+        self.circle_center = (pos[0] + int((min(max(start_val, min_val), max_val) - min_val) * length / (max_val-min_val)), pos[1]+radius/2)
         self.radius = radius
         self.is_clicked = False
         self.min_center = (self.x + 5, self.y + self.radius + 10)
