@@ -6,7 +6,7 @@ pygame.font.init()
 
 class Button:
     def __init__(self, pos, size, color='#475F77', text="Hi", elevation = 5, print_text = True):
-        self.nice_font = pygame.font.SysFont('Comic Sans MS', 30)
+        self.nice_font = pygame.font.SysFont('Comic Sans MS', 20)
         self.x = pos[0]
         self.y = pos[1]
         self.width = size[0]
@@ -66,7 +66,7 @@ class Button:
         pygame.draw.rect(screen, self.color, self.rect, border_radius = 12)
         #draw text
         if(self.print_text):
-            screen.blit(self.text_surface, self.text_surface.get_rect(center = self.rect.center))
+            screen.blit(self.text_surface, self.text_surface.get_rect(center = self.down_rect.center))
 
 
 class TextButton(Button):
@@ -130,10 +130,14 @@ class IntTextButton(Button):
 
 class BoolButton(Button):
     def extra_init_steps(self):
-        self.print_text = False
+        self.is_clicked = False
+
+    def get_val(self):
+        return self.is_clicked
 
     def process_clicked(self, event, screen):
         if self.check_clicked(event):
+            self.is_clicked = not self.is_clicked
             return True
         else:
             return False
@@ -199,6 +203,9 @@ class Slider:
 
     def draw(self, screen):
         #callee must do pygame.display.update()
+
+        #clean area for nicer draw
+        pygame.draw.rect(screen, "#FFFFFF", pygame.Rect((self.x - 10, self.y - 20), (self.length + 20, self.radius + 40)))
 
         #draw down rectanle for nicer view
         pygame.draw.rect(screen, self.bar_color, self.rect, border_radius = 12)

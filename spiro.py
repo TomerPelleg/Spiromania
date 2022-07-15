@@ -41,12 +41,12 @@ class Spiro:
 		trace = np.full((trace_l, 2), (0, 0))  # point
 		t, i = 0, 0
 
-		text_test_button = TextButton(pos = (0, 10), size =(200, 100), color = (15,15,100), text = "Me Text!", elevation=5)
-		test_int_button = IntTextButton(pos = (300, 10), size =(200, 100), color = (15,100,100), text = "Me Int!", elevation=5)
-		test_bool_button = BoolButton(pos = (600, 10), size =(200, 100), color = (100,15,100), text = "Me Silent!", elevation=5)
+		return_button = BoolButton(pos = (0, 0), size =(200, 100), color = (100,15,100), text = "Draw Again!", elevation=5)
 		slider = Slider(pos = (500, 500), length = 100)
-		buttons = [test_int_button, test_bool_button, text_test_button]
+		buttons = [return_button]
 		while True:
+			if return_button.get_val():
+				return
 			for button in buttons:
 				button.check_hover()
 				slider.check_hover()
@@ -54,6 +54,12 @@ class Spiro:
 				for button in buttons:
 					button.process_clicked(event, screen)
 				slider.process_clicked(event, screen)
+
+				if event.type == pygame.QUIT:
+					pygame.display.quit()
+					pygame.quit()
+					exit()
+
 				if event.type == pygame.QUIT:
 					pygame.display.quit()
 					pygame.quit()

@@ -4,7 +4,7 @@ from copy import deepcopy
 import numpy as np
 import pygame
 from spiro import Spiro
-from button import Button
+from button import Slider, BoolButton
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -43,11 +43,20 @@ def fourier_main():
 
 	ps = np.full((10000, 2), 0, dtype=float)
 	i = 0
-	k = 50
+	circle_num = 5
+	is_drawing = False
 	add_to_arr = False
-	r = pygame.Rect(0, 0, 10, 10)
+	circle_num_slider = Slider(pos = (width - 300, 50), length = 280, min_val=5, max_val=100)
+	test_bool_button = BoolButton(pos=(0, 0), size=(200, 100), color=(100, 15, 100), text="Start Draw", elevation=5)
+	buttons = [test_bool_button]
 	while True:
+		for button in buttons:
+			button.check_hover()
+		circle_num_slider.check_hover()
 		for event in pygame.event.get():
+			for button in buttons:
+				button.process_clicked(event, screen)
+			circle_num_slider.process_clicked(event, screen)
 			if event.type == pygame.QUIT:
 				pygame.display.quit()
 				pygame.quit()
@@ -57,24 +66,25 @@ def fourier_main():
 				if event.key == pygame.K_RETURN:		# IF ENTER IS PRESSED
 					ps = ps[:i]-start
 					xs, ys = create_function(ps)
-					coeffs = calc_coeffs(xs, ys, k)
-					speeds = np.array([num(ki) for ki in range(k)])
+					coeffs = calc_coeffs(xs, ys, circle_num)
+					speeds = np.array([num(ki) for ki in range(circle_num)])
 					s = Spiro(speeds, coeffs, screen)
+					return fourier_main()
 
-					rs = np.array(coeffs, dtype=int) ** 2 + np.array(-1j * coeffs, dtype=int) ** 2
+					# rs = np.array(coeffs, dtype=int) ** 2 + np.array(-1j * coeffs, dtype=int) ** 2
 					# s = OldSpiro(, [150,-35], , screen)
 
 					pygame.display.quit()
 					pygame.quit()
 					return
 
-			if event.type == pygame.MOUSEBUTTONDOWN:
+			if event.type == pygame.MOUSEBUTTONDOWN and is_drawing:
 				ps = np.full((1000, 2), 0, dtype=float)
 				i = 0
 				add_to_arr = True
 
 			if event.type == pygame.MOUSEBUTTONUP:
-				if len(ps)<2:
+				if len(ps[:i])<2:
 					add_to_arr = False
 					continue
 				pos = pygame.mouse.get_pos()
@@ -88,10 +98,17 @@ def fourier_main():
 				pygame.display.update()
 			if add_to_arr:
 				pos = pygame.mouse.get_pos()
-				pygame.draw.rect(screen, (0, 0, 175), pygame.Rect(pos, (10, 10)))
-				print(pos)
 				ps[i] = pos
+				for j in range(len(ps)):
+					pygame.draw.rect(screen, (0, 0, 175), pygame.Rect(ps[j], (5, 5)))
+				print(pos)
 				i += 1
+
+		for button in buttons:
+			button.draw(screen)
+		circle_num_slider.draw(screen)
+		circle_num = circle_num_slider.get_val()
+		is_drawing = test_bool_button.get_val()
 
 		pygame.display.update()
 
