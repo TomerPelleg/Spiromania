@@ -182,7 +182,7 @@ class Slider:
                 if self.is_mouse_touching():
                     self.is_clicked = True
         if event.type == pygame.MOUSEBUTTONUP:
-            self.is_clicked = True
+            self.is_clicked = False
 
     def process_clicked(self, event, screen):
         self.check_clicked(event)

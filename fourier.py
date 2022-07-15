@@ -15,7 +15,7 @@ start = np.asarray((width // 2, height // 2))
 
 
 def create_function(points):
-	xs = np.linspace(-1*PI, PI, np.shape(points)[0])
+	xs = np.linspace(-1*PI, PI-2*PI/(np.shape(points)[0]), (np.shape(points)[0]))
 	ys = points[:,0] + points[:,1] * 1j
 	return xs, ys
 
@@ -28,7 +28,7 @@ def calc_coeffs(xs, ys, k):
 	cfs = np.zeros(k, dtype=complex)
 	for n in range(k):
 		y_cpy = np.array([cmath.exp(-1j * num(n) * xs[ni]) for ni in range(len(xs))])
-		cfs[n] = sum(ys * y_cpy) / (len(xs)-1)
+		cfs[n] = sum(ys * y_cpy) / (len(xs) - 1)
 	return cfs
 
 
