@@ -21,7 +21,7 @@ def main_screen_main():
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.display.quit()
-				pygame.exit()
+				pygame.quit()
 
 			if fourier_button.process_clicked(event, screen):
 				r = fourier.fourier_main()
