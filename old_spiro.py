@@ -2,6 +2,7 @@ import pygame
 import numpy as np
 from math import cos, sin, pi
 from time import sleep
+from button import BoolButton
 
 # POSITIVE RADIUS MEANS OUTSIDE
 
@@ -20,43 +21,28 @@ alpha = 0
 width, height = (1000, 700)
 start = np.asarray((width // 2, height // 2))
 
+radii, init_degrees, s = 0,0,0
+
 
 class OldSpiro:
-	def __init__(self, radii, init_degrees):
-		pygame.init()
-		self.screen = pygame.display.set_mode((width, height))
-
-		self.screen.fill(WHITE)
-
+	def __init__(self, screen, radii, init_degrees, trace_l=int(1e5)):
 		self.rs = np.array(radii)
 		init_degrees = np.array(init_degrees)
 		self.betas = np.array(init_degrees)
+		self.screen = screen
 
 		point = self.draw_spiro(alpha=0)
 
-		trace_l = int(1e5)
-		trace = np.full((trace_l, 2), point)
+		self.trace_l = trace_l
+		self.trace = np.full((self.trace_l, 2), point)
 		t, i = 0, 0
 
-		while True:
-			for event in pygame.event.get():
-				if event.type == pygame.QUIT:
-					pygame.display.quit()
-					pygame.quit()
-					return
-
-			pygame.display.update()
-			self.screen.fill(WHITE)
-
-			self.betas = t * self.rs[0] / self.rs + init_degrees
-			# self.betas = 100*t + init_degrees
-
-			point = self.draw_spiro(alpha=0)
-			trace[i] = point
-			if i > 2:
-				pygame.draw.lines(self.screen, RED, False, trace[:i], width=2)
-			t += 0.01
-			i = (i + 1) % trace_l
+	def draw(self, t, i):
+		self.betas = t * self.rs[0] / self.rs + init_degrees
+		point = self.draw_spiro(alpha=0)
+		self.trace[i] = point
+		if i > 2:
+			pygame.draw.lines(self.screen, RED, False, self.trace[:i], width=2)
 
 	def draw_spiro(self, alpha=0.5):
 		centers, fixed_points = self.stack_spiro()
@@ -93,12 +79,48 @@ class OldSpiro:
 			fixed_points[i] = f
 		return centers, fixed_points
 
-if __name__ == '__main__':
-	#radii = np.array([64,32,64,32,16])
+
+def old_spiro_main():
+	global radii
+	global init_degrees
+	global s
+
+	# radii = np.array([64,32,64,32,16])
 	# radii = np.array([20, 90, 50])
 	# radii = np.array([150,-35])	# good
+
 	radii = np.array([70, -25])
-	# init_degrees = np.deg2rad(np.array([0,0,0]))
 	init_degrees = np.zeros(radii.shape)
 
-	s = OldSpiro(radii, init_degrees)
+	pygame.init()
+	screen = pygame.display.set_mode((width, height))
+	screen.fill(WHITE)
+
+	esc_button = BoolButton(pos = (700, 10), size =(300, 100), color = (15,15,200), text = "main screen", elevation=5)
+	esc_button.print_text = True
+
+	trace_l = int(1e5)
+	s = OldSpiro(screen, radii, init_degrees, trace_l)
+	t,i = 0,0
+	while True:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.display.quit()
+				pygame.quit()
+				return False
+			if esc_button.process_clicked(event, screen):
+				return True
+
+		pygame.display.update()
+		screen.fill(WHITE)
+		s.draw(t, i)
+
+		esc_button.check_hover()
+		esc_button.draw(screen)
+
+		t += 0.01
+		i = (i + 1) % trace_l
+
+
+if __name__ == '__main__':
+	old_spiro_main()
