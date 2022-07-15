@@ -1,10 +1,12 @@
+import math
+
 import pygame
 
 pygame.font.init()
-nice_font = pygame.font.SysFont('Comic Sans MS', 30)
 
 class Button:
     def __init__(self, pos, size, color='#475F77', text="Hi", elevation = 5, print_text = True):
+        self.nice_font = pygame.font.SysFont('Comic Sans MS', 30)
         self.x = pos[0]
         self.y = pos[1]
         self.width = size[0]
@@ -17,7 +19,7 @@ class Button:
         self.rect = pygame.Rect((self.x, self.y-self.elevation), size)
         self.down_rect = pygame.Rect((self.x, self.y), (self.width, self.height))
         self.text = text
-        self.text_surface = nice_font.render(text, False, (0, 0, 0))
+        self.text_surface = self.nice_font.render(text, False, (0, 0, 0))
 
         self.extra_init_steps()
 
@@ -26,7 +28,7 @@ class Button:
 
     def update_text(self, new_text):
         self.text = new_text
-        self.text_surface = nice_font.render(new_text, False, (0, 0, 0))
+        self.text_surface = self.nice_font.render(new_text, False, (0, 0, 0))
 
     def update_rect(self):
         self.rect = pygame.Rect((self.x, self.y-self.elevation), (self.width, self.height))
@@ -135,3 +137,75 @@ class BoolButton(Button):
             return True
         else:
             return False
+
+class Slider:
+    def __init__(self, pos, length, min_val=5, max_val=50, circ_color='#FF0000', bar_color = '#354B5E', radius = 10):
+        self.nice_font = pygame.font.SysFont('Comic Sans MS', 15)
+        self.x = pos[0]
+        self.y = pos[1]
+        self.length = length
+        self.min_val = min_val
+        self.max_val = max_val
+        self.circ_color = circ_color
+        self.bar_color = bar_color
+        self.val = min_val
+        self.circle_center = (pos[0], pos[1]+radius/2)
+        self.radius = radius
+        self.is_clicked = False
+        self.min_center = (self.x + 5, self.y + self.radius + 10)
+        self.max_center = (self.x+self.length - 5, self.y +self.radius + 10)
+
+        self.rect = pygame.Rect((self.x, self.y), (self.length, self.radius))
+        self.min_text = self.nice_font.render(str(self.min_val), False, (0, 0, 0))
+        self.max_text = self.nice_font.render(str(self.max_val), False, (0, 0, 0))
+        self.text_surface = self.nice_font.render(str(self.val), False, (0, 0, 0))
+
+        self.extra_init_steps()
+
+    def extra_init_steps(self):
+        pass
+
+    def update_text(self):
+        self.text_surface = self.nice_font.render(str(self.val), False, (0, 0, 0))
+
+    def update_val(self):
+        self.val = int(self.min_val + (self.circle_center[0] - self.x)/float(self.length) * (self.max_val - self.min_val))
+        self.update_text()
+
+    def is_mouse_touching(self):
+        mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
+        return bool(math.sqrt((self.circle_center[0] - mouse_pos_x) ** 2 + (self.circle_center[1] - mouse_pos_y) ** 2)<=self.radius)
+
+    def check_clicked(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if pygame.mouse.get_pressed()[0]:
+                if self.is_mouse_touching():
+                    self.is_clicked = True
+        if event.type == pygame.MOUSEBUTTONUP:
+            self.is_clicked = True
+
+    def process_clicked(self, event, screen):
+        self.check_clicked(event)
+
+    def check_hover(self):
+        if self.is_clicked:
+            self.circle_center = (min(max(pygame.mouse.get_pos()[0], self.x), self.x + self.length), self.circle_center[1])
+            self.update_val()
+        else:
+            pass
+
+    def get_val(self):
+        return self.val
+
+    def draw(self, screen):
+        #callee must do pygame.display.update()
+
+        #draw down rectanle for nicer view
+        pygame.draw.rect(screen, self.bar_color, self.rect, border_radius = 12)
+        #draw up rectangle
+        pygame.draw.circle(screen, self.circ_color, self.circle_center, self.radius)
+        #draw text
+        screen.blit(self.text_surface, self.text_surface.get_rect(center = (self.x + self.length/2, self.y - 10)))
+        screen.blit(self.min_text, self.min_text.get_rect(center = self.min_center))
+        screen.blit(self.max_text, self.max_text.get_rect(center = self.max_center))
+

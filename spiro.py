@@ -3,7 +3,7 @@ import numpy as np
 from math import cos, sin, pi
 from time import sleep
 import cmath
-from button import Button, TextButton, IntTextButton, BoolButton
+from button import Button, TextButton, IntTextButton, BoolButton, Slider
 
 # POSITIVE RADIUS MEANS OUTSIDE
 
@@ -44,13 +44,16 @@ class Spiro:
 		text_test_button = TextButton(pos = (0, 10), size =(200, 100), color = (15,15,100), text = "Me Text!", elevation=5)
 		test_int_button = IntTextButton(pos = (300, 10), size =(200, 100), color = (15,100,100), text = "Me Int!", elevation=5)
 		test_bool_button = BoolButton(pos = (600, 10), size =(200, 100), color = (100,15,100), text = "Me Silent!", elevation=5)
+		slider = Slider(pos = (500, 500), length = 100)
 		buttons = [test_int_button, test_bool_button, text_test_button]
 		while True:
 			for button in buttons:
 				button.check_hover()
+				slider.check_hover()
 			for event in pygame.event.get():
 				for button in buttons:
 					button.process_clicked(event, screen)
+				slider.process_clicked(event, screen)
 				if event.type == pygame.QUIT:
 					pygame.display.quit()
 					pygame.quit()
@@ -81,6 +84,7 @@ class Spiro:
 
 			for button in buttons:
 				button.draw(screen)
+			slider.draw(screen)
 
 # def new_draw_spiro(self, centers, fixed_points, alpha=0.5):
 	# 	dist = (centers - fixed_points) ** 2
