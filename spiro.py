@@ -1,4 +1,7 @@
+import math
+
 import pygame
+import time
 import numpy as np
 from math import cos, sin, pi
 from time import sleep
@@ -41,12 +44,12 @@ class Spiro:
 		trace = np.full((trace_l, 2), (0, 0))  # point
 		t, i = 0, 0
 
-		text_test_button = TextButton(pos = (0, 10), size =(200, 100), color = (15,15,100), text = "Me Text!", elevation=5)
-		test_int_button = IntTextButton(pos = (300, 10), size =(200, 100), color = (15,100,100), text = "Me Int!", elevation=5)
-		test_bool_button = BoolButton(pos = (600, 10), size =(200, 100), color = (100,15,100), text = "Me Silent!", elevation=5)
-		slider = Slider(pos = (500, 500), length = 100)
-		buttons = [test_int_button, test_bool_button, text_test_button]
+		return_button = BoolButton(pos = (0, 0), size =(200, 100), color = (100,15,100), text = "Draw Again!", elevation=5)
+		slider = Slider(pos = (300, 20), length = 400, min_val = 1, max_val= 1000)
+		buttons = [return_button]
 		while True:
+			if return_button.get_val():
+				return
 			for button in buttons:
 				button.check_hover()
 				slider.check_hover()
@@ -54,6 +57,12 @@ class Spiro:
 				for button in buttons:
 					button.process_clicked(event, screen)
 				slider.process_clicked(event, screen)
+
+				if event.type == pygame.QUIT:
+					pygame.display.quit()
+					pygame.quit()
+					exit()
+
 				if event.type == pygame.QUIT:
 					pygame.display.quit()
 					pygame.quit()
@@ -78,9 +87,13 @@ class Spiro:
 			trace[i] = rep(sum_v)
 
 			if i > 2:
-				pygame.draw.lines(self.screen, RED, False, trace[:i], width=2)
+				for idx in range(int(max(0, i- 2 * math.pi / t)), i):
+					decay_factor = 0.5 + (idx - max(0, i- 2 * math.pi / t)) * 0.5 / (i - max(0, i- 2 * math.pi / t))
+					decay_red = int(decay_factor * 255)
+					pygame.draw.line(self.screen, (decay_red, 0, decay_red), trace[idx], trace[idx+1], width=2)
 			t += 1e-5
 			i = (i + 1) % trace_l
+			time.sleep(0.01 / slider.get_val())
 
 			for button in buttons:
 				button.draw(screen)
