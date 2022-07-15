@@ -31,7 +31,7 @@ def rep(z):
 
 
 class Spiro:
-	def __init__(self, speeds, cfs, screen=None):
+	def __init__(self, speeds, cfs, screen=None, ps = None):
 		pygame.init()
 		if screen is None:
 			self.screen = pygame.display.set_mode((width, height))
@@ -87,10 +87,13 @@ class Spiro:
 			trace[i] = rep(sum_v)
 
 			if i > 2:
-				for idx in range(int(max(0, i- 2 * math.pi / t)), i):
-					decay_factor = 0.5 + (idx - max(0, i- 2 * math.pi / t)) * 0.5 / (i - max(0, i- 2 * math.pi / t))
+				for j in range(len(ps)):
+					if ps is not None:
+						pygame.draw.rect(screen, (0, 0, 175), pygame.Rect(ps[j], (3, 3)))
+				for idx in range(int(max(0, i- 1.9 * math.pi / t)), i):
+					decay_factor = 0.5 + (idx - max(0, i- 1.9 * math.pi / t)) * 0.5 / (i - max(0, i- 1.9 * math.pi / t))
 					decay_red = int(decay_factor * 255)
-					pygame.draw.line(self.screen, (decay_red, 0, decay_red), trace[idx], trace[idx+1], width=2)
+					pygame.draw.line(self.screen, (decay_red, 0, decay_red), trace[idx], trace[idx+1], width=4)
 			t += 1e-5
 			i = (i + 1) % trace_l
 			time.sleep(0.01 / slider.get_val())

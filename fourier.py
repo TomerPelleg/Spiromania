@@ -46,7 +46,7 @@ def fourier_main():
 	circle_num = 5
 	is_drawing = False
 	add_to_arr = False
-	circle_num_slider = Slider(pos = (width - 300, 50), length = 280, min_val=5, max_val=100)
+	circle_num_slider = Slider(pos = (width - 300, 50), length = 280, min_val=5, max_val=100, start_val=50)
 	test_bool_button = BoolButton(pos=(0, 0), size=(200, 100), color=(100, 15, 100), text="Start Draw", elevation=5)
 	buttons = [test_bool_button]
 	while True:
@@ -68,7 +68,7 @@ def fourier_main():
 					xs, ys = create_function(ps)
 					coeffs = calc_coeffs(xs, ys, circle_num)
 					speeds = np.array([num(ki) for ki in range(circle_num)])
-					s = Spiro(speeds, coeffs, screen)
+					s = Spiro(speeds, coeffs, screen, ps[:i] + start)
 					return fourier_main()
 
 					# rs = np.array(coeffs, dtype=int) ** 2 + np.array(-1j * coeffs, dtype=int) ** 2
