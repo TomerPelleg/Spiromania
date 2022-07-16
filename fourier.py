@@ -120,7 +120,7 @@ def fourier_main():
 			return draw(ps, last_elemnt, circle_num)
 
 		if bird_button.get_val():
-			ps = np.load('true_elephent.npy')
+			ps = np.load('elephent.npy')
 			last_elemnt = 1
 			for j in range(len(ps)):
 				if not (ps[j][0]==0 and ps[j][1]==0):
