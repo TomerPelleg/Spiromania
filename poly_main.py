@@ -4,7 +4,8 @@ from shape import Shape
 import time
 from shapely.geometry.polygon import Polygon
 from shapely.geometry import Point
-from inputshape import InputShape
+from inputshape import get_points
+import button
 import math
 import sympy
 
@@ -34,15 +35,18 @@ def poly_main():
 	outside_Polygon = Polygon(outside_Shape.cur_points)
 
 	pygame.init()
-	screen = pygame.display.set_mode((700, 500))
+	screen = pygame.display.set_mode((720, 500))
 
 	screen.fill((255,255,255))
 	inside_Shape.draw_shape(screen)
 	outside_Shape.draw_shape(screen)
-	button1 = InputShape(screen)
-	button1.prepare()
+
 	pygame.display.update()
 	clock = pygame.time.Clock()
+
+	esc_button = button.BoolButton(pos=(500, 10), size=(200, 100), color=(70,70,200), text="main screen", elevation=5)
+	button_one = button.BoolButton(pos=(10, 10), size=(200, 100), color=(150, 150, 15), text="draw shapes", elevation=5)
+	buttons = [esc_button, button_one]
 
 	cntr = 0
 	while True:
@@ -52,11 +56,11 @@ def poly_main():
 				pygame.quit()
 				return
 			if event.type == pygame.MOUSEBUTTONDOWN:
-				if button1.onclick(*pygame.mouse.get_pos()):
+				if button_one.process_clicked(event, screen):
 					screen.fill((255,255,255))
 					pygame.display.update()
-					outside_shape = button1.get_points()
-					inside_shape = button1.get_points()
+					outside_shape = get_points(screen)
+					inside_shape = get_points(screen)
 					screen.fill((255,255,255))
 					pygame.display.update()
 					inside_Shape = Shape(inside_shape)
@@ -65,23 +69,23 @@ def poly_main():
 					inside_Shape.draw_shape(screen)
 					outside_Shape.draw_shape(screen)
 					pygame.display.update()
+				if esc_button.process_clicked(event, screen):
+					return True
 		for i in range(5):
 			inside_Shape.calc_rotated(outside_Shape.cur_points, outside_Polygon)
+
 		screen.fill((255,255,255))
-		# inside_Shape.draw_shape(screen, ((2*cntr+200)%255,(9*cntr)%255,(4*cntr+100)%255))
+		for s_button in buttons:
+			s_button.check_hover()
+			s_button.draw(screen)
 		inside_Shape.draw_shape(screen, (0, 0, 255))
 		outside_Shape.draw_shape(screen)
-		button1.prepare()
 		pygame.display.update()
 		clock.tick(500)
 		cntr += 1
 
-	# while True:
-	# 	shape.draw_shape(screen)
-	# 	big_shape.draw_shape(screen)
-	# 	pygame.display.update()
-	# 	clock.tick(5)
-
 
 if __name__ == "__main__":
-	main()
+	poly_main()
+
+# todo: add button for main screen

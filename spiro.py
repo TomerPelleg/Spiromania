@@ -44,7 +44,7 @@ class Spiro:
 		trace = np.full((trace_l, 2), (0, 0))  # point
 		t, i = 0, 0
 
-		return_button = BoolButton(pos = (0, 0), size =(200, 100), color = (100,15,100), text = "Draw Again!", elevation=5)
+		return_button = BoolButton(pos = (0, 10), size =(200, 100), color = (100,15,100), text = "Draw Again!", elevation=5)
 		slider = Slider(pos = (300, 20), length = 400, min_val = 1, max_val= 100000)
 		buttons = [return_button]
 		while True:
