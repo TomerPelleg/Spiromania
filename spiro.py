@@ -45,7 +45,7 @@ class Spiro:
 		t, i = 0, 0
 
 		return_button = BoolButton(pos = (0, 0), size =(200, 100), color = (100,15,100), text = "Draw Again!", elevation=5)
-		slider = Slider(pos = (300, 20), length = 400, min_val = 1, max_val= 100000)
+		slider = Slider(pos = (300, 20), length = 400, min_val = 10, max_val= 100, name = "speed")
 		buttons = [return_button]
 		while True:
 			if return_button.get_val():
@@ -96,7 +96,7 @@ class Spiro:
 					pygame.draw.line(self.screen, (decay_red, 0, decay_red), trace[idx], trace[idx+1], width=4)
 			t += 1e-5
 			i = (i + 1) % trace_l
-			time.sleep(0.01 / slider.get_val())
+			time.sleep(0.1 / slider.get_val())
 
 			for button in buttons:
 				button.draw(screen)

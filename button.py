@@ -87,10 +87,12 @@ class TextButton(Button):
                             return ret
                         else:
                             return "" #behaviour for empty input
-                    if event.key == pygame.K_BACKSPACE:  # for removing (backspace)
+                    elif event.key == pygame.K_BACKSPACE:  # for removing (backspace)
                         if len(txt):
                             txt = txt[:-1]
-                    if(event.unicode.isalnum()):
+                    # if(event.unicode.isalnum()):
+                    #     txt.append(event.unicode)
+                    else:
                         txt.append(event.unicode)
                     self.update_text("".join(txt))
                     self.draw(screen)
@@ -143,7 +145,7 @@ class BoolButton(Button):
             return False
 
 class Slider:
-    def __init__(self, pos, length, min_val=5, max_val=50, start_val = 5, circ_color='#FF0000', bar_color = '#354B5E', radius = 10):
+    def __init__(self, pos, length, min_val=5, max_val=50, start_val = 5, circ_color='#FF0000', bar_color = '#354B5E', radius = 10, name = ""):
         self.nice_font = pygame.font.SysFont('Comic Sans MS', 15)
         self.x = pos[0]
         self.y = pos[1]
@@ -153,6 +155,7 @@ class Slider:
         self.circ_color = circ_color
         self.bar_color = bar_color
         self.val = start_val
+        self.name = name
         self.circle_center = (pos[0] + int((min(max(start_val, min_val), max_val) - min_val) * length / (max_val-min_val)), pos[1]+radius/2)
         self.radius = radius
         self.is_clicked = False
@@ -162,7 +165,8 @@ class Slider:
         self.rect = pygame.Rect((self.x, self.y), (self.length, self.radius))
         self.min_text = self.nice_font.render(str(self.min_val), False, (0, 0, 0))
         self.max_text = self.nice_font.render(str(self.max_val), False, (0, 0, 0))
-        self.text_surface = self.nice_font.render(str(self.val), False, (0, 0, 0))
+        self.val_text = self.nice_font.render(str(self.val), False, (0, 0, 0))
+        self.name_text = self.nice_font.render(str(self.name), False, (0, 0, 0))
 
         self.extra_init_steps()
 
@@ -170,7 +174,7 @@ class Slider:
         pass
 
     def update_text(self):
-        self.text_surface = self.nice_font.render(str(self.val), False, (0, 0, 0))
+        self.val_text = self.nice_font.render(str(self.val), False, (0, 0, 0))
 
     def update_val(self):
         self.val = int(self.min_val + (self.circle_center[0] - self.x)/float(self.length) * (self.max_val - self.min_val))
@@ -211,8 +215,10 @@ class Slider:
         pygame.draw.rect(screen, self.bar_color, self.rect, border_radius = 12)
         #draw up rectangle
         pygame.draw.circle(screen, self.circ_color, self.circle_center, self.radius)
-        #draw text
-        screen.blit(self.text_surface, self.text_surface.get_rect(center = (self.x + self.length/2, self.y - 10)))
+        #draw texts
+        screen.blit(self.val_text, self.val_text.get_rect(center = (self.x + self.length/2, self.y - 10)))
         screen.blit(self.min_text, self.min_text.get_rect(center = self.min_center))
         screen.blit(self.max_text, self.max_text.get_rect(center = self.max_center))
+        screen.blit(self.name_text, self.name_text.get_rect(center = (self.x + self.length/2, self.y + self.radius + 10)))
+
 

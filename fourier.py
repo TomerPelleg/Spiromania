@@ -55,7 +55,7 @@ def fourier_main():
 	circle_num = 5
 	is_drawing = False
 	add_to_arr = False
-	circle_num_slider = button.Slider(pos = (width - 300, 50), length = 280, min_val=5, max_val=100, start_val=50)
+	circle_num_slider = button.Slider(pos = (width - 300, 50), length = 280, min_val=5, max_val=100, start_val=50, name = "number of circles")
 	draw_button = button.BoolButton(pos=(0, 0), size=(200, 100), color=(100, 15, 100), text="Start Draw", elevation=5)
 	elephent_button = button.BoolButton(pos=(0, 150), size=(200, 100), color=(100, 15, 100), text="Elephent", elevation=5)
 	bird_button = button.BoolButton(pos=(0, 300), size=(200, 100), color=(100, 15, 100), text="Elephent?", elevation=5)
@@ -71,7 +71,7 @@ def fourier_main():
 			if event.type == pygame.QUIT:
 				pygame.display.quit()
 				pygame.quit()
-				return
+				return False
 
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_RETURN:		# IF ENTER IS PRESSED
