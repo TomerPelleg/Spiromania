@@ -24,11 +24,13 @@ def main_screen_main():
 				pygame.quit()
 
 			if fourier_button.process_clicked(event, screen):
+				print("mo")
 				r = fourier.fourier_main()
-
+				print("do")
 
 			elif old_spiro_button.process_clicked(event, screen):
-				r = old_spiro.old_spiro_main()
+				print("yo")
+				r = fourier.fourier_main()
 				if r == False:
 					exit()
 				else:

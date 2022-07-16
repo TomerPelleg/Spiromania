@@ -4,7 +4,7 @@ from copy import deepcopy
 import numpy as np
 import pygame
 from spiro import Spiro
-from button import Slider, BoolButton
+import button
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -31,8 +31,17 @@ def calc_coeffs(xs, ys, k):
 		cfs[n] = sum(ys * y_cpy) / (len(xs) - 1)
 	return cfs
 
+def draw(ps, i, circle_num):
+	ps = ps[:i] - start
+	xs, ys = create_function(ps)
+	coeffs = calc_coeffs(xs, ys, circle_num)
+	speeds = np.array([num(ki) for ki in range(circle_num)])
+	s = Spiro(speeds, coeffs, screen, ps[:i] + start)
+	print("no")
+	return fourier_main()
 
 def fourier_main():
+	print("here")
 	pygame.init()
 	global screen
 	screen = pygame.display.set_mode((1000, 700))
@@ -46,16 +55,18 @@ def fourier_main():
 	circle_num = 5
 	is_drawing = False
 	add_to_arr = False
-	circle_num_slider = Slider(pos = (width - 300, 50), length = 280, min_val=5, max_val=100, start_val=50)
-	test_bool_button = BoolButton(pos=(0, 0), size=(200, 100), color=(100, 15, 100), text="Start Draw", elevation=5)
-	buttons = [test_bool_button]
+	circle_num_slider = button.Slider(pos = (width - 300, 50), length = 280, min_val=5, max_val=100, start_val=50)
+	draw_button = button.BoolButton(pos=(0, 0), size=(200, 100), color=(100, 15, 100), text="Start Draw", elevation=5)
+	elephent_button = button.BoolButton(pos=(0, 150), size=(200, 100), color=(100, 15, 100), text="Elephent", elevation=5)
+	bird_button = button.BoolButton(pos=(0, 300), size=(200, 100), color=(100, 15, 100), text="Elephent?", elevation=5)
+	buttons = [draw_button, elephent_button, bird_button]
 	while True:
-		for button in buttons:
-			button.check_hover()
+		for s_button in buttons:
+			s_button.check_hover()
 		circle_num_slider.check_hover()
 		for event in pygame.event.get():
-			for button in buttons:
-				button.process_clicked(event, screen)
+			for s_button in buttons:
+				s_button.process_clicked(event, screen)
 			circle_num_slider.process_clicked(event, screen)
 			if event.type == pygame.QUIT:
 				pygame.display.quit()
@@ -64,19 +75,10 @@ def fourier_main():
 
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_RETURN:		# IF ENTER IS PRESSED
-					ps = ps[:i]-start
-					xs, ys = create_function(ps)
-					coeffs = calc_coeffs(xs, ys, circle_num)
-					speeds = np.array([num(ki) for ki in range(circle_num)])
-					s = Spiro(speeds, coeffs, screen, ps[:i] + start)
-					return fourier_main()
+					return draw(ps, i, circle_num)
 
 					# rs = np.array(coeffs, dtype=int) ** 2 + np.array(-1j * coeffs, dtype=int) ** 2
 					# s = OldSpiro(, [150,-35], , screen)
-
-					pygame.display.quit()
-					pygame.quit()
-					return
 
 			if event.type == pygame.MOUSEBUTTONDOWN and is_drawing:
 				ps = np.full((1000, 2), 0, dtype=float)
@@ -104,11 +106,26 @@ def fourier_main():
 				print(pos)
 				i += 1
 
-		for button in buttons:
-			button.draw(screen)
+		for s_button in buttons:
+			s_button.draw(screen)
 		circle_num_slider.draw(screen)
 		circle_num = circle_num_slider.get_val()
-		is_drawing = test_bool_button.get_val()
+		is_drawing = draw_button.get_val()
+		if elephent_button.get_val():
+			ps = np.load('true_elephent.npy')
+			last_elemnt = 1
+			for j in range(len(ps)):
+				if not (ps[j][0]==0 and ps[j][1]==0):
+					last_elemnt = j
+			return draw(ps, last_elemnt, circle_num)
+
+		if bird_button.get_val():
+			ps = np.load('true_elephent.npy')
+			last_elemnt = 1
+			for j in range(len(ps)):
+				if not (ps[j][0]==0 and ps[j][1]==0):
+					last_elemnt = j
+			return draw(ps, last_elemnt, circle_num)
 
 		pygame.display.update()
 
