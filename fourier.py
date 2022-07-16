@@ -55,15 +55,12 @@ def fourier_main():
 	circle_num = 5
 	is_drawing = False
 	add_to_arr = False
-	circle_num_slider = button.Slider(pos = (width - 300, 150), length = 280, min_val=5, max_val=100, start_val=50)
-	draw_button = button.BoolButton(pos=(0, 10), size=(200, 100), color=(100, 15, 100), text="Start Draw", elevation=5)
-	elephent_button = button.BoolButton(pos=(0, 160), size=(200, 100), color=(100, 15, 100), text="Elephent", elevation=5)
-	bird_button = button.BoolButton(pos=(0, 310), size=(200, 100), color=(100, 15, 100), text="Elephent?", elevation=5)
-	esc_button = button.BoolButton(pos=(700, 10), size=(300, 100), color=(70,70,200), text="main screen", elevation=5)
+	circle_num_slider = button.Slider(pos = (width - 300, 50), length = 280, min_val=5, max_val=100, start_val=50, name = "number of circles")
+	draw_button = button.BoolButton(pos=(0, 0), size=(200, 100), color=(100, 15, 100), text="Start Draw", elevation=5)
+	elephent_button = button.BoolButton(pos=(0, 150), size=(200, 100), color=(100, 15, 100), text="Elephent", elevation=5)
+	bird_button = button.BoolButton(pos=(0, 300), size=(200, 100), color=(100, 15, 100), text="Elephent?", elevation=5)
+	esc_button = button.BoolButton(pos=(700, 10), size=(300, 100), color=(70, 70, 200), text="main screen", elevation=5)
 	buttons = [draw_button, elephent_button, bird_button, esc_button]
-	for s_button in buttons:
-		s_button.print_text = True
-
 	while True:
 		for s_button in buttons:
 			s_button.check_hover()

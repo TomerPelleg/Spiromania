@@ -2,8 +2,7 @@ import pygame
 import numpy as np
 from math import cos, sin, pi
 from time import sleep
-from button import BoolButton
-from button import Slider
+from button import BoolButton, TextButton, Slider
 
 # POSITIVE RADIUS MEANS OUTSIDE
 
@@ -76,6 +75,8 @@ class OldSpiro:
 			fixed_points[i] = f
 		return centers, fixed_points
 
+def process_radii(radii_string):
+	return np.fromstring(radii_string, dtype = int, sep = ",")
 
 def old_spiro_main():
 	# radii = np.array([64,32,64,32,16])
@@ -89,15 +90,12 @@ def old_spiro_main():
 	screen = pygame.display.set_mode((width, height))
 	screen.fill(WHITE)
 
-	esc_button = BoolButton(pos = (700, 10), size =(300, 100), color = (70,70,200), text = "main screen", elevation=5)
-	speed_slider = Slider(pos = (20, 30), length=400, start_val=1, min_val=1, max_val=100)
-	count_slider = Slider(pos = (20, 110), length=400, start_val=2, min_val=2, max_val=10)
+	esc_button = BoolButton(pos = (700, 10), size =(300, 100), color = (15,15,200), text = "main screen", elevation=5)
+	radii_button = TextButton(pos = (0, 10), size =(300, 100), color = (15,15,200), text = "75,-25", elevation=5)
+	speed_slider = Slider(pos=(400, 20), length=250, min_val=10, max_val=100, name="speed", start_val=20)
 
-	elements = [esc_button, speed_slider, count_slider]
+	elements = [esc_button, radii_button, speed_slider]
 	buttons = [esc_button]
-	for button in buttons:
-		button.print_text = True
-
 	trace_l = int(1e5)
 	s = OldSpiro(screen, radii, init_degrees, trace_l)
 	t,i = 0,0
@@ -109,15 +107,15 @@ def old_spiro_main():
 				return False
 			if esc_button.process_clicked(event, screen):
 				return True
-			speed_slider.process_clicked(event, screen)
-			count_slider.process_clicked(event, screen)
-
-			if count_slider.get_val() != len(s.rs):
-				n = count_slider.get_val()
-				radii = np.array([(-1)**i * (100- 30*i) for i in range(n)])
-
+			new_radii = radii_button.process_clicked(event, screen)
+			if(new_radii):
+				screen.fill(WHITE)
+				radii = process_radii(new_radii)
 				init_degrees = np.zeros(radii.shape)
 				s = OldSpiro(screen, radii, init_degrees, trace_l)
+				t,i = 0, 0
+			speed_slider.process_clicked(event, screen)
+
 		pygame.display.update()
 		screen.fill(WHITE)
 		s.draw(t, i)
@@ -126,10 +124,16 @@ def old_spiro_main():
 			element.check_hover()
 			element.draw(screen)
 
-		t += 0.01 * speed_slider.get_val()
+		radii_button.check_hover()
+		radii_button.draw(screen)
+
+		speed_slider.check_hover()
+		speed_slider.draw(screen)
+		sleep(0.1/speed_slider.get_val())
+
+		t += 0.01
 		i = (i + 1) % trace_l
 
 
 if __name__ == '__main__':
 	old_spiro_main()
-
