@@ -26,9 +26,9 @@ hexagon = [(0,0), (6,0), (9,5.2), (6, 10.4), (0,10.4), (-3, 5.2)]
 
 def poly_main():
 	inside_shape = np.asarray(create_regular_polygon(4, 3),
-					dtype=np.float64)*10 + (300,300)
+					dtype=np.float64)*10 + (450,311)
 	outside_shape = np.asarray(create_regular_polygon(7, 3),
-					dtype=np.float64)*10 + (300,300)
+					dtype=np.float64)*10 + (450,311)
 	inside_Shape = Shape(inside_shape)
 	outside_Shape = Shape(outside_shape)
 	outside_Polygon = Polygon(outside_Shape.cur_points)

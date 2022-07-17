@@ -32,12 +32,13 @@ def calc_coeffs(xs, ys, k):
 	return cfs
 
 def draw(ps, i, circle_num):
+	if(i <=10): #small number of points
+		return fourier_main()
 	ps = ps[:i] - start
 	xs, ys = create_function(ps)
 	coeffs = calc_coeffs(xs, ys, circle_num)
 	speeds = np.array([num(ki) for ki in range(circle_num)])
 	s = Spiro(speeds, coeffs, screen, ps[:i] + start)
-	print("no")
 	return fourier_main()
 
 def fourier_main():
