@@ -15,6 +15,7 @@ class Button:
         self.bottom_color = '#354B5E'
         self.elevation = elevation
         self.print_text = print_text
+        self.is_clicked = False
 
         self.rect = pygame.Rect((self.x, self.y-self.elevation), size)
         self.down_rect = pygame.Rect((self.x, self.y), (self.width, self.height))
@@ -48,6 +49,8 @@ class Button:
     def process_clicked(self, event, screen):
         if self.check_clicked(event):
             return self.click_func(screen)
+        else:
+            return None
 
     def check_hover(self):
         mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
@@ -99,6 +102,14 @@ class TextButton(Button):
                     pygame.display.update()
 
 class IntTextButton(Button):
+    def check_clicked(self, event):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if pygame.mouse.get_pressed()[0]:
+                mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
+                if self.down_rect.collidepoint(mouse_pos_x, mouse_pos_y):
+                    self.is_clicked = True
+        return self.is_clicked
+
     def click_func(self, screen):
         txt = []
         self.update_text("".join(txt))

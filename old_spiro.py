@@ -95,7 +95,6 @@ def old_spiro_main():
 	speed_slider = Slider(pos=(400, 20), length=250, min_val=10, max_val=100, name="speed", start_val=20)
 
 	elements = [esc_button, radii_button, speed_slider]
-	buttons = [esc_button]
 	trace_l = int(1e5)
 	s = OldSpiro(screen, radii, init_degrees, trace_l)
 	t,i = 0,0

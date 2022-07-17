@@ -45,8 +45,10 @@ class Spiro:
 		t, i = 0, 0
 
 		return_button = BoolButton(pos = (0, 0), size =(200, 100), color = (100,15,100), text = "Draw Again!", elevation=5)
+		draw_circles_button = BoolButton(pos = (0, 200), size =(200, 100), color = (100,15,100), text = "Draw Circles?", elevation=5)
+
 		slider = Slider(pos = (300, 20), length = 400, min_val = 10, max_val= 100, name = "speed")
-		buttons = [return_button]
+		buttons = [return_button, draw_circles_button]
 		while True:
 			if return_button.get_val():
 				return
@@ -77,12 +79,14 @@ class Spiro:
 			# centers = [partial_sum[2*w] for w in range(len(cfs)//2)]
 			# fixed_points = [partial_sum[2*w+1] for w in range(len(cfs)//2)]
 
-			sum_v = width // 2 + 1.j * (height // 2)
+			sum_v = width // 2 + 1.j * (height // 2) + cfs[0] #cfs[0] is the offset - no need to draw
 			rotator = [cmath.exp(1.j * speeds[n] * t) for n in range(len(cfs))]
 			cfs *= rotator
 
-			for q in cfs:
+			for q in cfs[1:]:
 				pygame.draw.lines(self.screen, BLUE, False, [rep(sum_v),rep(q+sum_v)], width=2)
+				if draw_circles_button.get_val():
+					pygame.draw.circle(self.screen, BLUE, rep(sum_v), abs(q), width=1)
 				sum_v += q
 			trace[i] = rep(sum_v)
 
