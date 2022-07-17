@@ -21,10 +21,10 @@ alpha = 0
 width, height = (1000, 700)
 start = np.asarray((width // 2, height // 2))
 
-
 class OldSpiro:
 	def __init__(self, screen, radii, init_degrees, trace_l=int(1e5)):
 		self.rs = np.array(radii)
+		self.init_degrees = np.array(init_degrees)
 		self.betas = np.array(init_degrees)
 		self.screen = screen
 
@@ -36,7 +36,7 @@ class OldSpiro:
 		self.trace = np.full((self.trace_l, 2), point)
 
 	def draw(self, t, i):
-		self.betas = t * self.rs[0] / self.rs + self.betas
+		self.betas = t * self.rs[0] / self.rs + self.init_degrees
 		point = self.draw_spiro(alpha=0)
 		self.trace[i] = point
 		if i > 2:
@@ -124,11 +124,6 @@ def old_spiro_main():
 			element.check_hover()
 			element.draw(screen)
 
-		radii_button.check_hover()
-		radii_button.draw(screen)
-
-		speed_slider.check_hover()
-		speed_slider.draw(screen)
 		sleep(0.1/speed_slider.get_val())
 
 		t += 0.01
