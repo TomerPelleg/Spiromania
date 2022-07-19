@@ -51,7 +51,7 @@ def fourier_main():
 	# pygame.draw.rect(screen, (0,0,0), pygame.Rect(0,0,50,50))
 	pygame.display.update()
 
-	ps = np.full((10000, 2), 0, dtype=float)
+	ps = []
 	i = 0
 	circle_num = 5
 	is_drawing = False
@@ -85,7 +85,7 @@ def fourier_main():
 					return draw(ps, i, circle_num)
 
 			if event.type == pygame.MOUSEBUTTONDOWN and is_drawing:
-				ps = np.full((1000, 2), 0, dtype=float)
+				ps = []
 				i = 0
 				add_to_arr = True
 
@@ -100,7 +100,7 @@ def fourier_main():
 
 			if add_to_arr:
 				pos = pygame.mouse.get_pos()
-				ps[i] = pos
+				ps.append(pos)
 				for j in range(len(ps)):
 					pygame.draw.rect(screen, (0, 0, 175), pygame.Rect(ps[j], (5, 5)))
 				print(pos)
@@ -117,7 +117,7 @@ def fourier_main():
 				return draw(ps, last_elemnt, circle_num)
 
 			if bird_button.get_val():
-				ps = np.load('elephent.npy')
+				ps = np.load('totoro.npy')
 				last_elemnt = 1
 				for j in range(len(ps)):
 					if not (ps[j][0] == 0 and ps[j][1] == 0):

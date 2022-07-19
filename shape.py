@@ -73,8 +73,8 @@ class Shape:
 	def draw_shape(self, screen, color=(255,0,0)):
 		# shape
 		mid_point = np.dot(self.special_point, self.cur_points[:len(self.special_point)])
-		pygame.draw.lines(screen, (0, 0, 0), closed=True, self.cur_points, width=2)
+		pygame.draw.lines(screen, (0, 0, 0), self.cur_points, width=2, closed=True)
 		# trace
 		if len(self.trace) > 1:
 			pygame.draw.circle(screen, (255, 0, 0), mid_point, radius=5)
-			pygame.draw.lines(screen, color, closed=False, self.trace, width=2)
+			pygame.draw.lines(screen, color, self.trace, width=2, closed=False)
