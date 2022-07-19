@@ -10,7 +10,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
 PI = cmath.pi
-width, height = (1000, 700)
+width, height = (1000, 650)
 start = np.asarray((width // 2, height // 2))
 
 
@@ -38,14 +38,14 @@ def draw(ps, i, circle_num):
 	xs, ys = create_function(ps)
 	coeffs = calc_coeffs(xs, ys, circle_num)
 	speeds = np.array([num(ki) for ki in range(circle_num)])
-	s = Spiro(speeds, coeffs, screen, ps[:i] + start)
+	s = Spiro(speeds, coeffs, None, ps[:i] + start)
 	return fourier_main()
 
 def fourier_main():
 	print("here")
 	pygame.init()
 	global screen
-	screen = pygame.display.set_mode((1000, 700))
+	screen = pygame.display.set_mode((width, height))
 
 	screen.fill(WHITE)
 	# pygame.draw.rect(screen, (0,0,0), pygame.Rect(0,0,50,50))
@@ -56,11 +56,12 @@ def fourier_main():
 	circle_num = 5
 	is_drawing = False
 	add_to_arr = False
-	circle_num_slider = button.Slider(pos = (width - 600, 50), length = 280, min_val=5, max_val=100, start_val=50, name = "number of circles")
-	draw_button = button.BoolButton(pos=(0, 0), size=(200, 100), color=(100, 15, 100), text="Start Draw", elevation=5)
-	elephent_button = button.BoolButton(pos=(0, 150), size=(200, 100), color=(100, 15, 100), text="Elephent", elevation=5)
-	bird_button = button.BoolButton(pos=(0, 300), size=(200, 100), color=(100, 15, 100), text="Elephent?", elevation=5)
-	esc_button = button.BoolButton(pos=(700, 10), size=(300, 100), color=(70, 70, 200), text="main screen", elevation=5)
+	circle_num_slider = button.Slider(pos = (width - 300, height-50), length = 280, min_val=5, max_val=100, start_val=50, name = "number of circles")
+	draw_button = button.BoolButton(pos=(10, 10), size=(200, 100), color="#775F47", text="Start Draw", elevation=5, fg_color=(255,255,255))
+	draw_button = button.BoolButton(pos=(10, 10), size=(200, 100), color="#775F47", text="Start Draw", elevation=5, fg_color=(255,255,255))
+	elephent_button = button.BoolButton(pos=(10, 160), size=(200, 100), color="#775F47", text="Elephent", elevation=5, fg_color=(255,255,255))
+	bird_button = button.BoolButton(pos=(10, 310), size=(200, 100), color="#775F47", text="Elephent?", elevation=5, fg_color=(255,255,255))
+	esc_button = button.BoolButton(pos=(width-210, 10), size=(200, 100), color="#775F47", text="Main Screen", elevation=5, fg_color=(255,255,255))
 	buttons = [draw_button, elephent_button, bird_button, esc_button]
 	while True:
 		for s_button in buttons:

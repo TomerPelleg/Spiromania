@@ -9,6 +9,9 @@ import button
 import math
 import sympy
 
+
+width, height = 900, 500
+
 s0 = [(0, 0), (5, 0), (6, 6), (3, 8), (1, 4), (2, 2)]
 s1 = [(-1,1), (4,-4), (5,-2), (11,1), (10,5), (3,15)]
 
@@ -34,7 +37,7 @@ def poly_main():
 	outside_Polygon = Polygon(outside_Shape.cur_points)
 
 	pygame.init()
-	screen = pygame.display.set_mode((720, 500))
+	screen = pygame.display.set_mode((width, height))
 
 	screen.fill((255,255,255))
 	inside_Shape.draw_shape(screen)
@@ -43,11 +46,16 @@ def poly_main():
 	pygame.display.update()
 	clock = pygame.time.Clock()
 
-	esc_button = button.BoolButton(pos=(500, 10), size=(200, 100), color=(70,70,200), text="main screen", elevation=5)
-	button_one = button.BoolButton(pos=(10, 10), size=(200, 100), color=(150, 150, 15), text="draw shapes", elevation=5)
-	regular_button = button.BoolButton(pos = (10, 150), size =(300, 100), color = (15,15,200), text = "Regular Shapes", elevation=5)
-	hidden_button = button.IntTextButton(pos = (350, 300), size =(300, 100), color = (15,15,200), text = "Outside Shape\n Side Num", elevation=5)
-	speed_slider = button.Slider(pos=(250, 20), length=250, min_val=10, max_val=100, name="speed", start_val=20)
+	esc_button = button.BoolButton(pos=(width-210, 10), size=(200, 100), color=(15,150,200), text="Main Screen", elevation=5)
+	button_one = button.BoolButton(pos=(10, 10), size=(200, 100), color=(15,150,200), text="General Shapes", elevation=5)
+	regular_button = button.BoolButton(pos = (10, 150), size =(200, 100), color = (15,150,200), text = "Regular Shapes", elevation=5)
+	speed_slider = button.Slider(pos=(width-275, height-50), length=250, min_val=10, max_val=100, name="speed", start_val=20)
+	hidden_buttons = [0]*4
+	hidden_buttons[0] = button.Slider(pos = (width//3-150, height//3-50), length=250, min_val=3, max_val=20, name = "Outside Shape Edges", start_val=8)
+	hidden_buttons[1] = button.Slider(pos = (2*width//3-150, height//3-50), length=250, min_val=1, max_val=10, name = "Outside Shape Length")
+	hidden_buttons[2] = button.Slider(pos = (width//3-150, 2*height//3-50), length=250, min_val=3, max_val=22, name = "Inside Shape Edges")
+	hidden_buttons[3] = button.Slider(pos = (2*width//3-150, 2*height//3-50), length=250, min_val=1, max_val=10, name= "Inside Shape Length")
+	go_button = button.BoolButton(pos=(width-225, height-125), size=(200,100), color=(50,125,150), text="Draw")
 	buttons = [esc_button, button_one, speed_slider,regular_button]
 
 	cntr = 0
@@ -63,8 +71,8 @@ def poly_main():
 				if button_one.process_clicked(event, screen):
 					screen.fill((255,255,255))
 					pygame.display.update()
-					outside_shape = get_points(screen)
-					inside_shape = get_points(screen)
+					outside_shape = get_points(screen, 'Enter Outer Shape Vertices')
+					inside_shape = get_points(screen, 'Enter Inner Shape Vertices')
 					screen.fill((255,255,255))
 					pygame.display.update()
 					inside_Shape = Shape(inside_shape)
@@ -73,21 +81,28 @@ def poly_main():
 					inside_Shape.draw_shape(screen)
 					outside_Shape.draw_shape(screen)
 					pygame.display.update()
-				if regular_button.process_clicked(event, screen):
+
+				if regular_button.process_clicked(event, screen): 		# insert polygons
 					#user input regular shapes
-					text_list = ["Outside Shape Side Num", "Outside Shape Side Len", "Inside Shape Side Num", "Inside Shape Side Len"]
 					target_list = [None,None,None,None]
+					clicked = -1
 					screen.fill((255,255,255))
-					for j in range(4):
-						hidden_button.update_text(text_list[j])
-						while True:
-							hidden_button.check_hover()
-							hidden_button.draw(screen)
-							for mini_event in pygame.event.get():
-								target_list[j] =  hidden_button.process_clicked(event, screen)
-							if target_list[j] is not None:
+					finished = False
+					while not finished:
+						pygame.display.update()
+						screen.fill((255,255,255))
+						for j in range(4):
+							hidden_buttons[j].draw(screen)
+							hidden_buttons[j].check_hover()
+						go_button.draw(screen)
+						go_button.check_hover()
+						for mini_event in pygame.event.get():
+							for j in range(4):
+								hidden_buttons[j].process_clicked(mini_event, screen)
+							if go_button.process_clicked(event, screen):
+								target_list = [hidden_buttons[i].get_val() for i in range(4)]
+								finished = True
 								break
-							pygame.display.update()
 
 					center = sum(create_regular_polygon(target_list[0], target_list[1]), start = (0,0))
 					center = (center[0] /len(create_regular_polygon(target_list[2], target_list[3])),
@@ -124,4 +139,4 @@ def poly_main():
 if __name__ == "__main__":
 	poly_main()
 
-# todo: add button for main screen
+# todo: add button for Main Screen

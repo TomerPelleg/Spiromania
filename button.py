@@ -5,8 +5,8 @@ import pygame
 pygame.font.init()
 
 class Button:
-    def __init__(self, pos, size, color='#475F77', text="Hi", elevation = 5, print_text = True):
-        self.nice_font = pygame.font.SysFont('Comic Sans MS', 20)
+    def __init__(self, pos, size, color='#475F77', text="Hi", elevation = 5, fg_color='#000000', print_text = True):
+        self.nice_font = pygame.font.SysFont('Calibri', 20)
         self.x = pos[0]
         self.y = pos[1]
         self.width = size[0]
@@ -16,11 +16,12 @@ class Button:
         self.elevation = elevation
         self.print_text = print_text
         self.is_clicked = False
+        self.fg_color = fg_color
 
         self.rect = pygame.Rect((self.x, self.y-self.elevation), size)
         self.down_rect = pygame.Rect((self.x, self.y), (self.width, self.height))
         self.text = text
-        self.text_surface = self.nice_font.render(text, False, (0, 0, 0))
+        self.text_surface = self.nice_font.render(text, True, self.fg_color)
 
         self.extra_init_steps()
 
@@ -29,7 +30,7 @@ class Button:
 
     def update_text(self, new_text):
         self.text = new_text
-        self.text_surface = self.nice_font.render(new_text, False, (0, 0, 0))
+        self.text_surface = self.nice_font.render(new_text, False, self.fg_color)
 
     def update_rect(self):
         self.rect = pygame.Rect((self.x, self.y-self.elevation), (self.width, self.height))
@@ -157,7 +158,7 @@ class BoolButton(Button):
 
 class Slider:
     def __init__(self, pos, length, min_val=5, max_val=50, start_val = 5, circ_color='#FF0000', bar_color = '#354B5E', radius = 10, name = ""):
-        self.nice_font = pygame.font.SysFont('Comic Sans MS', 15)
+        self.nice_font = pygame.font.SysFont('Calibri MS', 20)
         self.x = pos[0]
         self.y = pos[1]
         self.length = length

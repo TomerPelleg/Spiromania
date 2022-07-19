@@ -22,7 +22,7 @@ TRK = (0, 180, 120)
 BLUE = (0, 0, 255)
 alpha = 0
 
-width, height = (1000, 700)
+width, height = (1000, 650)
 start = np.asarray((width // 2, height // 2))
 
 
@@ -44,8 +44,8 @@ class Spiro:
 		trace = np.full((trace_l, 2), (0, 0))  # point
 		t, i = 0, 0
 
-		return_button = BoolButton(pos = (0, 0), size =(200, 100), color = (100,15,100), text = "Draw Again!", elevation=5)
-		draw_circles_button = BoolButton(pos = (0, 200), size =(200, 100), color = (100,15,100), text = "Draw Circles?", elevation=5)
+		return_button = BoolButton(pos = (10, 10), size =(200, 100), color = "#775F47", text = "Draw Again!", fg_color="#FFFFFF", elevation=5)
+		draw_circles_button = BoolButton(pos = (10, 160), size =(200, 100), color = "#775F47", text = "Show Circles", fg_color="#FFFFFF", elevation=5)
 
 		slider = Slider(pos = (300, 20), length = 400, min_val = 10, max_val= 100, name = "speed")
 		buttons = [return_button, draw_circles_button]
@@ -57,8 +57,8 @@ class Spiro:
 				slider.check_hover()
 			for event in pygame.event.get():
 				for button in buttons:
-					button.process_clicked(event, screen)
-				slider.process_clicked(event, screen)
+					button.process_clicked(event, self.screen)
+				slider.process_clicked(event, self.screen)
 
 				if event.type == pygame.QUIT:
 					pygame.display.quit()
@@ -93,7 +93,7 @@ class Spiro:
 			if i > 2:
 				for j in range(len(ps)):
 					if ps is not None:
-						pygame.draw.rect(screen, (0, 0, 175), pygame.Rect(ps[j], (3, 3)))
+						pygame.draw.rect(self.screen, (0, 0, 175), pygame.Rect(ps[j], (3, 3)))
 				for idx in range(int(max(0, i- 1.9 * math.pi / t)), i):
 					decay_factor = 0.5 + (idx - max(0, i- 1.9 * math.pi / t)) * 0.5 / (i - max(0, i- 1.9 * math.pi / t))
 					decay_red = int(decay_factor * 255)
@@ -103,19 +103,6 @@ class Spiro:
 			time.sleep(0.1 / slider.get_val())
 
 			for button in buttons:
-				button.draw(screen)
-			slider.draw(screen)
+				button.draw(self.screen)
+			slider.draw(self.screen)
 
-# def new_draw_spiro(self, centers, fixed_points, alpha=0.5):
-	# 	dist = (centers - fixed_points) ** 2
-	# 	dist = (dist[:, 0] + dist[:, 1]) ** 0.5
-	# 	radii = dist
-	#
-	# 	centers += start
-	# 	fixed_points += start
-	#
-	# 	for i, r in enumerate(radii):
-	# 		pygame.draw.circle(self.screen, BLACK, centers[i], r, width=3)
-	# 		if i > 0:
-	# 			pygame.draw.line(self.screen, GREY, centers[i], fixed_points[i], width=3)
-	# 	return alpha * centers[-1] + (1 - alpha) * fixed_points[-1]

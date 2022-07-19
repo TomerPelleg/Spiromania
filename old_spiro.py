@@ -90,8 +90,8 @@ def old_spiro_main():
 	screen = pygame.display.set_mode((width, height))
 	screen.fill(WHITE)
 
-	esc_button = BoolButton(pos = (700, 10), size =(300, 100), color = (15,15,200), text = "main screen", elevation=5)
-	radii_button = TextButton(pos = (0, 10), size =(300, 100), color = (15,15,200), text = "75,-25", elevation=5)
+	esc_button = BoolButton(pos = (700, 10), size =(300, 100), color = "#77475F", text = "Main Screen", elevation=5)
+	radii_button = TextButton(pos = (0, 10), size =(300, 100), color = "#77475F", text = "75,-25", elevation=5)
 	speed_slider = Slider(pos=(400, 20), length=250, min_val=10, max_val=100, name="speed", start_val=20)
 
 	elements = [esc_button, radii_button, speed_slider]

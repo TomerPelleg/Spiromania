@@ -1,6 +1,7 @@
 import pygame
 import time
 import numpy as np
+from button import BoolButton
 
 font = 'stsong'
 pygame.font.init()
@@ -22,8 +23,16 @@ class InputShape:
 		return self.xywh[0] < x < self.xywh[0] + self.xywh[2] and self.xywh[1] < y < self.xywh[1] + self.xywh[3]
 
 
-def get_points(screen):
+def get_points(screen, ask_text=None):
 	l = list()
+	if ask_text is not None:
+		# pygame.font.Font(r'C:\WINDOWS\FONTS\MSJH.TTC', 15).render(line, True, (0, 0, 0))
+		text_button = BoolButton(pos=(20, 20), size=(200, 0), color="#FFFFFF", text=ask_text,
+										 fg_color="#000000", elevation=0)
+		clear_button = BoolButton(pos=(0, 0), size=(250, 50), color="#FFFFFF", text='nothing',
+								 fg_color="#FFFFFF", elevation=0)
+		text_button.draw(screen)
+		pygame.display.update()
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
@@ -39,6 +48,7 @@ def get_points(screen):
 				if event.key == pygame.K_RETURN:
 					if len(l) > 2:
 						pygame.draw.line(screen, (255, 0, 0), l[0], l[-1])
+						clear_button.draw(screen)
 						pygame.display.update()
 						return np.array(l, dtype=float)
 					else:
