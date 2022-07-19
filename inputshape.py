@@ -23,7 +23,7 @@ class InputShape:
 		return self.xywh[0] < x < self.xywh[0] + self.xywh[2] and self.xywh[1] < y < self.xywh[1] + self.xywh[3]
 
 
-def get_points(screen, ask_text=None):
+def get_points(screen, ask_text=None, skip_chinese=False):
 	l = list()
 	if ask_text is not None:
 		# pygame.font.Font(r'C:\WINDOWS\FONTS\MSJH.TTC', 15).render(line, True, (0, 0, 0))
@@ -44,9 +44,9 @@ def get_points(screen, ask_text=None):
 				if len(l) > 1:
 					pygame.draw.line(screen, (255, 0, 0), l[-1], l[-2])
 					pygame.display.update()
-			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_RETURN:
-					if len(l) > 2:
+			if (skip_chinese and len(l)) or event.type == pygame.KEYDOWN :
+				if (skip_chinese and len(l)) or event.key == pygame.K_RETURN: #use early return as feature!!!!
+					if len(l) > 2 or skip_chinese:
 						pygame.draw.line(screen, (255, 0, 0), l[0], l[-1])
 						clear_button.draw(screen)
 						pygame.display.update()

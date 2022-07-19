@@ -21,6 +21,15 @@ class Shape:
 	# self.cur_point_position
 	# self.cur_angle = 0
 
+	def update_special_point(self, new_point):
+		#compute base matrix
+		first_row = [self.cur_points[0][0], self.cur_points[0][1], 1]
+		second_row = [self.cur_points[1][0], self.cur_points[1][1], 1]
+		third_row = [self.cur_points[2][0], self.cur_points[2][1], 1]
+		matrix = np.matrix([first_row, second_row, third_row])
+		self.special_point = np.matmul([new_point[0], new_point[1], 1], np.linalg.inv(matrix))
+		self.special_point = np.array(self.special_point)[0]
+
 	def calc_rotated(self, big_shape_points: list = None, big_shape_poly: Polygon = None, alpha=0.01):
 		alpha *= self.factor
 		# cur_point = self.cur_points[self.cur_point_index]
@@ -73,8 +82,8 @@ class Shape:
 	def draw_shape(self, screen, color=(255,0,0)):
 		# shape
 		mid_point = np.dot(self.special_point, self.cur_points[:len(self.special_point)])
-		pygame.draw.lines(screen, (0, 0, 0), self.cur_points, width=2, closed=True)
+		pygame.draw.lines(screen, color=(0, 0, 0), points=self.cur_points, width=2, closed=True)
 		# trace
 		if len(self.trace) > 1:
 			pygame.draw.circle(screen, (255, 0, 0), mid_point, radius=5)
-			pygame.draw.lines(screen, color, self.trace, width=2, closed=False)
+			pygame.draw.lines(screen, color=color, points=self.trace, width=2, closed=False)
