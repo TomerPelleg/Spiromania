@@ -5,7 +5,7 @@ import pygame
 pygame.font.init()
 
 class Button:
-    def __init__(self, pos, size, color='#475F77', text="Hi", elevation = 5, fg_color='#000000', print_text = True):
+    def __init__(self, pos, size, color='#475F77', text="Hi", elevation = 5, fg_color='#000000', print_text = True, extra_parameters=[]):
         self.nice_font = pygame.font.SysFont('Calibri', 20)
         self.x = pos[0]
         self.y = pos[1]
@@ -20,12 +20,13 @@ class Button:
 
         self.rect = pygame.Rect((self.x, self.y-self.elevation), size)
         self.down_rect = pygame.Rect((self.x, self.y), (self.width, self.height))
+        self.initial_text = text
         self.text = text
         self.text_surface = self.nice_font.render(text, True, self.fg_color)
 
-        self.extra_init_steps()
+        self.extra_init_steps(extra_parameters)
 
-    def extra_init_steps(self):
+    def extra_init_steps(self, extra_parameters):
         pass
 
     def update_text(self, new_text):
@@ -143,8 +144,12 @@ class IntTextButton(Button):
 
 
 class BoolButton(Button):
-    def extra_init_steps(self):
+    def extra_init_steps(self, extra_parameters):
         self.is_clicked = False
+        if(len(extra_parameters)):
+            self.clicked_text = extra_parameters[0]
+        else:
+            self.clicked_text = self.initial_text
 
     def get_val(self):
         return self.is_clicked
@@ -152,6 +157,10 @@ class BoolButton(Button):
     def process_clicked(self, event, screen):
         if self.check_clicked(event):
             self.is_clicked = not self.is_clicked
+            if(self.get_val()):
+                self.update_text(self.clicked_text)
+            else:
+                self.update_text(self.initial_text)
             return True
         else:
             return False

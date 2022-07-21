@@ -46,6 +46,8 @@ def fourier_main():
 	pygame.init()
 	global screen
 	screen = pygame.display.set_mode((width, height))
+	img = pygame.image.load('totoro_picture.png')
+	img = pygame.transform.scale(img, (300, 400))
 
 	screen.fill(WHITE)
 	# pygame.draw.rect(screen, (0,0,0), pygame.Rect(0,0,50,50))
@@ -128,6 +130,7 @@ def fourier_main():
 			pygame.draw.rect(screen, (0, 0, 175), pygame.Rect(ps[j], (5, 5)))
 		pygame.display.update()
 		screen.fill((255,255,255))
+		screen.blit(img, (300,150))
 
 
 if __name__ == '__main__':

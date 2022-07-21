@@ -45,10 +45,11 @@ class Spiro:
 		t, i = 0, 0
 
 		return_button = BoolButton(pos = (10, 10), size =(200, 100), color = "#775F47", text = "Draw Again!", fg_color="#FFFFFF", elevation=5)
-		draw_circles_button = BoolButton(pos = (10, 160), size =(200, 100), color = "#775F47", text = "Show Circles", fg_color="#FFFFFF", elevation=5)
+		draw_circles_button = BoolButton(pos = (10, 160), size =(200, 100), color = "#775F47", text = "Show Circles", fg_color="#FFFFFF", elevation=5, extra_parameters=["Hide Circles"])
+		draw_original_button = BoolButton(pos = (10, 310), size =(200, 100), color = "#775F47", text = "Show Original Drawing", fg_color="#FFFFFF", elevation=5, extra_parameters=["Hide Original Drawing"])
 
 		slider = Slider(pos = (300, 20), length = 400, min_val = 10, max_val= 100, name = "speed")
-		buttons = [return_button, draw_circles_button]
+		buttons = [return_button, draw_circles_button, draw_original_button]
 		while True:
 			if return_button.get_val():
 				return
@@ -92,7 +93,7 @@ class Spiro:
 
 			if i > 2:
 				for j in range(len(ps)):
-					if ps is not None:
+					if ps is not None and draw_original_button.get_val():
 						pygame.draw.rect(self.screen, (0, 0, 175), pygame.Rect(ps[j], (3, 3)))
 				for idx in range(int(max(0, i- 1.9 * math.pi / t)), i):
 					decay_factor = 0.5 + (idx - max(0, i- 1.9 * math.pi / t)) * 0.5 / (i - max(0, i- 1.9 * math.pi / t))
