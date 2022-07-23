@@ -46,8 +46,6 @@ def fourier_main():
 	pygame.init()
 	global screen
 	screen = pygame.display.set_mode((width, height))
-	img = pygame.image.load('totoro_picture.png')
-	img = pygame.transform.scale(img, (300, 400))
 
 	screen.fill(WHITE)
 	# pygame.draw.rect(screen, (0,0,0), pygame.Rect(0,0,50,50))
@@ -60,9 +58,8 @@ def fourier_main():
 	add_to_arr = False
 	circle_num_slider = button.Slider(pos = (width - 300, height-50), length = 280, min_val=5, max_val=100, start_val=50, name = "number of circles")
 	draw_button = button.BoolButton(pos=(10, 10), size=(200, 100), color="#775F47", text="Start Draw", elevation=5, fg_color=(255,255,255))
-	draw_button = button.BoolButton(pos=(10, 10), size=(200, 100), color="#775F47", text="Start Draw", elevation=5, fg_color=(255,255,255))
 	elephent_button = button.BoolButton(pos=(10, 160), size=(200, 100), color="#775F47", text="Elephent", elevation=5, fg_color=(255,255,255))
-	bird_button = button.BoolButton(pos=(10, 310), size=(200, 100), color="#775F47", text="Elephent?", elevation=5, fg_color=(255,255,255))
+	bird_button = button.BoolButton(pos=(10, 310), size=(200, 100), color="#775F47", text="Totoro", elevation=5, fg_color=(255,255,255))
 	esc_button = button.BoolButton(pos=(width-210, 10), size=(200, 100), color="#775F47", text="Main Screen", elevation=5, fg_color=(255,255,255))
 	buttons = [draw_button, elephent_button, bird_button, esc_button]
 	while True:
@@ -130,8 +127,6 @@ def fourier_main():
 			pygame.draw.rect(screen, (0, 0, 175), pygame.Rect(ps[j], (5, 5)))
 		pygame.display.update()
 		screen.fill((255,255,255))
-		screen.blit(img, (300,150))
-
 
 if __name__ == '__main__':
 	fourier_main()

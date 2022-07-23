@@ -106,13 +106,18 @@ def poly_main():
 								finished = True
 								break
 
-					center = sum(create_regular_polygon(target_list[0], target_list[1]), start = (0,0))
-					center = (center[0] /len(create_regular_polygon(target_list[2], target_list[3])),
-					center[1] / len(create_regular_polygon(target_list[2], target_list[3])))
+					scale = 10
+					outside_raw_polygon =create_regular_polygon(target_list[0], target_list[1])
+					center = sum(outside_raw_polygon, start = (0,0))
+					center = (center[0] /len(outside_raw_polygon),center[1] / len(outside_raw_polygon)) #vertex 0 of the polygon
+					center = (center[0] - target_list[1] / sympy.sin(sympy.pi / target_list[0]), center[1]) #center of mass of polygon
+					center = (int(center[0]), int(center[1]))
+					print("here here")
+					center = (center[0]*scale, center[1]*scale) #scale
 					inside_shape = np.asarray(create_regular_polygon(target_list[2], target_list[3]),
-											  dtype=np.float64) * 10 + (360, 250) - center
-					outside_shape = np.asarray(create_regular_polygon(target_list[0], target_list[1]),
-											   dtype=np.float64) * 10 + (360, 250) - center
+											  dtype=np.float64) * scale + (width/2, height/2) - center
+					outside_shape = np.asarray(outside_raw_polygon,
+											   dtype=np.float64) * scale + (width/2, height/2) - center
 					screen.fill((255,255,255))
 					pygame.display.update()
 					inside_Shape = Shape(inside_shape)
