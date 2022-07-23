@@ -9,9 +9,9 @@ width, height = 900, 200
 fourier_button, old_spiro_button, polygons_button, buttons = [0]*4
 def init_buttons():
 	global fourier_button, old_spiro_button, polygons_button, buttons
-	fourier_button = button.BoolButton(pos = (3*width//4-50, height//2-50), size =(200, 100), color = (60,200,140), text = "custom drawing", elevation=5)
-	old_spiro_button = button.BoolButton(pos = (2*width//4-100, height//2-50), size =(200, 100), color = (100,200,100), text = "symmetric circles", elevation=5)
-	polygons_button = button.BoolButton(pos = (width//4-150, height//2-50), size =(200, 100), color = (140,200,60), text = "draw polygons", elevation=5)
+	fourier_button = button.BoolButton(pos = (3*width//4-50, height//2-50), size =(200, 100), color = (60,200,140), text = "Custom Drawing", elevation=5)
+	old_spiro_button = button.BoolButton(pos = (2*width//4-100, height//2-50), size =(200, 100), color = (100,200,100), text = "Symmetric Circles", elevation=5)
+	polygons_button = button.BoolButton(pos = (width//4-150, height//2-50), size =(200, 100), color = (140,200,60), text = "Draw Polygons", elevation=5)
 	buttons = [fourier_button, old_spiro_button, polygons_button]
 init_buttons()
 

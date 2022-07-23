@@ -42,7 +42,9 @@ class Spiro:
 
 		trace_l = int(1e5)
 		trace = np.full((trace_l, 2), (0, 0))  # point
+		t_step = (1e-2)
 		t, i = 0, 0
+		rotator = [cmath.exp(1.j * speeds[n] * t_step) for n in range(len(cfs))]
 
 		return_button = BoolButton(pos = (10, 10), size =(200, 100), color = "#775F47", text = "Draw Again!", fg_color="#FFFFFF", elevation=5)
 		draw_circles_button = BoolButton(pos = (10, 160), size =(200, 100), color = "#775F47", text = "Show Circles", fg_color="#FFFFFF", elevation=5, extra_parameters=["Hide Circles"])
@@ -80,9 +82,8 @@ class Spiro:
 			# centers = [partial_sum[2*w] for w in range(len(cfs)//2)]
 			# fixed_points = [partial_sum[2*w+1] for w in range(len(cfs)//2)]
 
-			sum_v = width // 2 + 1.j * (height // 2) + cfs[0] #cfs[0] is the offset - no need to draw
-			rotator = [cmath.exp(1.j * speeds[n] * t) for n in range(len(cfs))]
 			cfs *= rotator
+			sum_v = width // 2 + 1.j * (height // 2) + cfs[0] #cfs[0] is the offset - no need to draw
 
 			for q in cfs[1:]:
 				pygame.draw.lines(self.screen, BLUE, False, [rep(sum_v),rep(q+sum_v)], width=2)
@@ -95,12 +96,15 @@ class Spiro:
 				for j in range(len(ps)):
 					if ps is not None and draw_original_button.get_val():
 						pygame.draw.rect(self.screen, (0, 0, 175), pygame.Rect(ps[j], (3, 3)))
-				for idx in range(int(max(0, i- 1.9 * math.pi / t)), i):
-					decay_factor = 0.5 + (idx - max(0, i- 1.9 * math.pi / t)) * 0.5 / (i - max(0, i- 1.9 * math.pi / t))
+				for idx in range(int(max(0, i- 1.9 * math.pi / t_step)), i):
+					decay_factor = 0.5 + (idx - max(0, i- 1.9 * math.pi / t_step)) * 0.5 / (i - max(0, i- 1.9 * math.pi / t_step))
 					decay_red = int(decay_factor * 255)
 					pygame.draw.line(self.screen, (decay_red, 0, decay_red), trace[idx], trace[idx+1], width=4)
-			t += 1e-5
+
+			t += t_step
 			i = (i + 1) % trace_l
+			if i==0:
+				print("yo")
 			time.sleep(0.1 / slider.get_val())
 
 			for button in buttons:
