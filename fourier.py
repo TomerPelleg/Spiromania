@@ -10,7 +10,8 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
 PI = cmath.pi
-width, height = (1000, 650)
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+width, height = (pygame.display.Info().current_w, pygame.display.Info().current_h)
 start = np.asarray((width // 2, height // 2))
 
 

@@ -4,7 +4,8 @@ import fourier
 import old_spiro
 import poly_main
 
-width, height = 900, 200
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
 
 fourier_button, old_spiro_button, polygons_button, buttons = [0]*4
 def init_buttons():

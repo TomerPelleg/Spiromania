@@ -10,7 +10,8 @@ import math
 import sympy
 
 
-width, height = 900, 500
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
 
 s0 = [(0, 0), (5, 0), (6, 6), (3, 8), (1, 4), (2, 2)]
 s1 = [(-1,1), (4,-4), (5,-2), (11,1), (10,5), (3,15)]

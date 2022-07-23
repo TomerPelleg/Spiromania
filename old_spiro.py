@@ -18,7 +18,8 @@ TRK = (0, 180, 120)
 
 alpha = 0
 
-width, height = (1000, 700)
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
+width, height = (pygame.display.Info().current_w, pygame.display.Info().current_h)
 start = np.asarray((width // 2, height // 2))
 
 class OldSpiro:
