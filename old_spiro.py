@@ -23,9 +23,9 @@ start = np.asarray((width // 2, height // 2))
 
 class OldSpiro:
 	def __init__(self, screen, radii, init_degrees, trace_l=int(1e5)):
-		self.rs = np.array(radii)
-		self.init_degrees = np.array(init_degrees)
-		self.betas = np.array(init_degrees)
+		self.rs = np.array(radii) #radii
+		self.init_degrees = np.array(init_degrees) #initial degrees
+		self.betas = np.array(init_degrees) #angle between the radius of a circle to a radius of the previous circle (radii from the center to fixed points)
 		self.screen = screen
 
 		point = self.draw_spiro(alpha=0)
@@ -35,7 +35,7 @@ class OldSpiro:
 		# the trace which follows the most inner circle
 		self.trace = np.full((self.trace_l, 2), point)
 
-	def draw(self, t, i):
+	def draw(self, t, i): #draw after t "time" the i-th point
 		self.betas = t * self.rs[0] / self.rs + self.init_degrees
 		point = self.draw_spiro(alpha=0)
 		self.trace[i] = point
@@ -62,12 +62,15 @@ class OldSpiro:
 
 		c, f = centers[0], fixed_points[0]
 		for i in range(1, num):
+			#	to copmtue where each point is at, we compute:
+			# where the center of a circle is, using the contact point with the previous circle
+			# where the contact pont with the next circle is, using the center and the angle
+
 			c = c * self.rs[i] - f * (self.rs[i - 1] + self.rs[i])
 			c = c / (-self.rs[i - 1])
 			centers[i] = c
 
 			new_p = f - c
-			# new_p *= cos(betas[i])+i*sin(betas[i])
 			new_p = np.array([new_p[0] * cos(self.betas[i]) - new_p[1] * sin(self.betas[i]),
 							  new_p[0] * sin(self.betas[i]) + new_p[1] * cos(self.betas[i])])
 			new_p = new_p + c
@@ -101,12 +104,14 @@ def old_spiro_main():
 	while True:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
+				# X is pressed
 				pygame.display.quit()
 				pygame.quit()
 				return False
 			if esc_button.process_clicked(event, screen):
+				# return to main screen
 				return True
-			new_radii = radii_button.process_clicked(event, screen)
+			new_radii = radii_button.process_clicked(event, screen) #get new radii
 			if(new_radii):
 				screen.fill(WHITE)
 				radii = process_radii(new_radii)
