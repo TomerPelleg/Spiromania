@@ -72,9 +72,9 @@ def poly_main():
 				if button_one.process_clicked(event, screen):
 					screen.fill((255,255,255))
 					pygame.display.update()
-					outside_shape = get_points(screen, 'Enter Outer Shape Vertices')
-					inside_shape = get_points(screen, 'Enter Inner Shape Vertices')
-					draw_point = get_points(screen, 'Enter point to follow', skip_chinese=True)
+					outside_shape = get_points(screen, 'Enter Outer Shape Vertices. Click on the vertices locations, and the app will auto-complete the last edge when you press enter')
+					inside_shape = get_points(screen, 'Enter Inner Shape Vertices. Click on the vertices locations, and the app will auto-complete the last edge when you press enter')
+					draw_point = get_points(screen, 'Enter point to follow. Click on the point!', skip_chinese=True)
 					screen.fill((255,255,255))
 					pygame.display.update()
 					inside_Shape = Shape(inside_shape)

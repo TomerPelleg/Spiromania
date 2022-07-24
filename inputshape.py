@@ -27,7 +27,7 @@ def get_points(screen, ask_text=None, skip_chinese=False):
 	l = list()
 	if ask_text is not None:
 		# pygame.font.Font(r'C:\WINDOWS\FONTS\MSJH.TTC', 15).render(line, True, (0, 0, 0))
-		text_button = BoolButton(pos=(20, 20), size=(200, 0), color="#FFFFFF", text=ask_text,
+		text_button = BoolButton(pos=(20, 20), size=(1300, 0), color="#FFFFFF", text=ask_text,
 										 fg_color="#000000", elevation=0)
 		clear_button = BoolButton(pos=(0, 0), size=(250, 50), color="#FFFFFF", text='nothing',
 								 fg_color="#FFFFFF", elevation=0)
