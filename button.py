@@ -65,6 +65,9 @@ class Button:
     def draw(self, screen):
         #callee must do pygame.display.update()
 
+        #clean area for nicer draw
+        pygame.draw.rect(screen, "#FFFFFF", pygame.Rect((self.x - 10, self.y - 20), (self.width + 20, self.height + 40)))
+
         #draw down rectanle for nicer view
         pygame.draw.rect(screen, self.bottom_color, self.down_rect, border_radius = 12)
         #draw up rectangle
