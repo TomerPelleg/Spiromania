@@ -9,11 +9,12 @@ width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
 
 fourier_button, old_spiro_button, polygons_button, buttons = [0]*4
 def init_buttons():
-	global fourier_button, old_spiro_button, polygons_button, buttons
+	global fourier_button, old_spiro_button, polygons_button, exit_button, buttons
 	fourier_button = button.BoolButton(pos = (3*width//4-50, height//2-50), size =(200, 100), color = (60,200,140), text = "Custom Drawing", elevation=5)
 	old_spiro_button = button.BoolButton(pos = (2*width//4-100, height//2-50), size =(200, 100), color = (100,200,100), text = "Symmetric Circles", elevation=5)
 	polygons_button = button.BoolButton(pos = (width//4-150, height//2-50), size =(200, 100), color = (140,200,60), text = "Draw Polygons", elevation=5)
-	buttons = [fourier_button, old_spiro_button, polygons_button]
+	exit_button = button.BoolButton(pos = (width-210, height-110), size =(200, 100), color = (255,0,0), text = "Close App", elevation=5)
+	buttons = [fourier_button, old_spiro_button, polygons_button, exit_button]
 init_buttons()
 
 
@@ -58,6 +59,11 @@ def main_screen_main():
 					exit()
 				else:
 					screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
+
+			elif exit_button.process_clicked(event, screen):
+				pygame.display.quit()
+				pygame.quit()
+				exit()
 
 		pygame.display.update()
 		screen.fill((255,255,255))
