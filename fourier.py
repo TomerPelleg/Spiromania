@@ -59,10 +59,10 @@ def fourier_main():
 	add_to_arr = False
 	circle_num_slider = button.Slider(pos = (width - 300, height-50), length = 280, min_val=5, max_val=100, start_val=50, name = "number of circles")
 	draw_button = button.BoolButton(pos=(10, 10), size=(200, 100), color="#775F47", text="Start Draw", elevation=5, fg_color=(255,255,255))
-	elephent_button = button.BoolButton(pos=(10, 160), size=(200, 100), color="#775F47", text="Elephent", elevation=5, fg_color=(255,255,255))
+	elephant_button = button.BoolButton(pos=(10, 160), size=(200, 100), color="#775F47", text="Elephant", elevation=5, fg_color=(255,255,255))
 	bird_button = button.BoolButton(pos=(10, 310), size=(200, 100), color="#775F47", text="Totoro", elevation=5, fg_color=(255,255,255))
 	esc_button = button.BoolButton(pos=(width-210, 10), size=(200, 100), color="#775F47", text="Main Screen", elevation=5, fg_color=(255,255,255))
-	buttons = [draw_button, elephent_button, bird_button, esc_button]
+	buttons = [draw_button, elephant_button, bird_button, esc_button]
 	while True:
 		for s_button in buttons:
 			s_button.check_hover()
@@ -108,8 +108,8 @@ def fourier_main():
 
 			circle_num = circle_num_slider.get_val()
 			is_drawing = draw_button.get_val()
-			if elephent_button.get_val():
-				ps = np.load('true_elephent.npy')
+			if elephant_button.get_val():
+				ps = np.load('true_elephant.npy')
 				last_elemnt = 1
 				for j in range(len(ps)):
 					if not (ps[j][0] == 0 and ps[j][1] == 0):
