@@ -2,6 +2,7 @@ import pygame
 import time
 import numpy as np
 from button import BoolButton
+import platform
 
 font = 'stsong'
 pygame.font.init()
@@ -27,7 +28,7 @@ def get_points(screen, ask_text=None, skip_chinese=False):
 	l = list()
 	if ask_text is not None:
 		# pygame.font.Font(r'C:\WINDOWS\FONTS\MSJH.TTC', 15).render(line, True, (0, 0, 0))
-		text_button = BoolButton(pos=(20, 20), size=(200, 0), color="#FFFFFF", text=ask_text,
+		text_button = BoolButton(pos=(20, 20), size=(1300, 0), color="#FFFFFF", text=ask_text,
 										 fg_color="#000000", elevation=0)
 		clear_button = BoolButton(pos=(0, 0), size=(250, 50), color="#FFFFFF", text='nothing',
 								 fg_color="#FFFFFF", elevation=0)
@@ -52,6 +53,12 @@ def get_points(screen, ask_text=None, skip_chinese=False):
 						pygame.display.update()
 						return np.array(l, dtype=float)
 					else:
+						if (platform.system() != 'Windows'):
+							creator = 'Torvalds' if (platform.system() == 'Linux') else 'Apple'
+							print("You don't use Windows, Bill Gates is sad. At least ", creator, " is happy.")
+							print("(BTW, we are shutting this app because of this. We will also shutter your window when you will sleep. Maybe then you will understand the value of windows.)")
+							print("P.S - you less points than inteded in draw polygon. That's the real reason we hate you.")
+							exit()
 						screen.fill((255, 0, 0))
 						# text = 'Terriblus Errorum: cantus allocatus 50000000 bytii'
 						text = u'''struct.c:8:1: warning: no semicolon at end of struct or union

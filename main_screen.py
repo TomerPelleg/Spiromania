@@ -21,7 +21,7 @@ init_buttons()
 def main_screen_main():
 	pygame.init()
 	global width, height
-	screen = pygame.display.set_mode((width, height), pygame.RESIZABLE)
+	screen = pygame.display.set_mode((width, height))
 
 	while True:
 		for button in buttons:
