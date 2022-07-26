@@ -31,7 +31,7 @@ class Button:
 
     def update_text(self, new_text):
         self.text = new_text
-        self.text_surface = self.nice_font.render(new_text, False, self.fg_color)
+        self.text_surface = self.nice_font.render(new_text, True, self.fg_color)
 
     def update_rect(self):
         self.rect = pygame.Rect((self.x, self.y-self.elevation), (self.width, self.height))
@@ -187,10 +187,10 @@ class Slider:
         self.max_center = (self.x+self.length - 5, self.y +self.radius + 10)
 
         self.rect = pygame.Rect((self.x, self.y), (self.length, self.radius))
-        self.min_text = self.nice_font.render(str(self.min_val), False, (0, 0, 0))
-        self.max_text = self.nice_font.render(str(self.max_val), False, (0, 0, 0))
-        self.val_text = self.nice_font.render(str(self.val), False, (0, 0, 0))
-        self.name_text = self.nice_font.render(str(self.name), False, (0, 0, 0))
+        self.min_text = self.nice_font.render(str(self.min_val), True, (0, 0, 0))
+        self.max_text = self.nice_font.render(str(self.max_val), True, (0, 0, 0))
+        self.val_text = self.nice_font.render(str(self.val), True, (0, 0, 0))
+        self.name_text = self.nice_font.render(str(self.name), True, (0, 0, 0))
 
         self.extra_init_steps()
 
@@ -198,7 +198,7 @@ class Slider:
         pass
 
     def update_text(self):
-        self.val_text = self.nice_font.render(str(self.val), False, (0, 0, 0))
+        self.val_text = self.nice_font.render(str(self.val), True, (0, 0, 0))
 
     def update_val(self):
         self.val = int(self.min_val + (self.circle_center[0] - self.x)/float(self.length) * (self.max_val - self.min_val))
