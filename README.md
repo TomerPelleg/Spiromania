@@ -10,7 +10,7 @@ Here we explore some of the hidden potential which comes from a computerized imp
 * Visualise fourier transforms with spirographs! (done)
 * Answer the *burning* question: what patterns could we draw if we used shapes other than circles? (done)
 
-##How to install
+## How to install
 
 First, create an empty folder for this project using your favourite method (mkdir, file explorer...). Make sure the folder have an active python interpeter.
 Then, clone this repository into your folder - you can run
