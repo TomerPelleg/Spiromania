@@ -10,6 +10,7 @@ from button import BoolButton, TextButton, Slider
 # https://stackoverflow.com/questions/70092416/pygame-efficient-way-to-draw-traceline-of-moving-object
 # also, pygame.display.update() can receive a rect to update instead of the entire screen
 
+#class for drawing rotating circles (one on another)
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREY = (100, 100, 100)
@@ -24,6 +25,8 @@ start = np.asarray((width // 2, height // 2))
 
 class OldSpiro:
 	def __init__(self, screen, radii, init_degrees, trace_l=int(1e5)):
+		# raddii = circles' radii
+		# init degress - starting position
 		self.rs = np.array(radii) #radii
 		self.init_degrees = np.array(init_degrees) #initial degrees
 		self.betas = np.array(init_degrees) #angle between the radius of a circle to a radius of the previous circle (radii from the center to fixed points)
@@ -80,6 +83,7 @@ class OldSpiro:
 		return centers, fixed_points
 
 def process_radii(radii_string):
+	#string to list of ints
 	return np.fromstring(radii_string, dtype = int, sep = ",")
 
 def old_spiro_main():

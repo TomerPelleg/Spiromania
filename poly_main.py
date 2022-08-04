@@ -16,6 +16,8 @@ width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
 s0 = [(0, 0), (5, 0), (6, 6), (3, 8), (1, 4), (2, 2)]
 s1 = [(-1,1), (4,-4), (5,-2), (11,1), (10,5), (3,15)]
 
+#create regular polygon, with right most vertex in (0,0)
+# x vertices, and edge length of length
 def create_regular_polygon(x, length):
 	listo = []
 	radius = length / sympy.sin(sympy.pi/x)
@@ -70,6 +72,7 @@ def poly_main():
 				element.process_clicked(event, screen)
 			if event.type == pygame.MOUSEBUTTONDOWN:
 				if button_one.process_clicked(event, screen):
+					# user specified polygons
 					screen.fill((255,255,255))
 					pygame.display.update()
 					outside_shape = get_points(screen, 'Enter Outer Shape Vertices. Click on the vertices locations, and the app will auto-complete the last edge when you press enter')
@@ -136,8 +139,8 @@ def poly_main():
 		for s_button in buttons:
 			s_button.check_hover()
 			s_button.draw(screen)
-		inside_Shape.draw_shape(screen, (0, 0, 255))
-		outside_Shape.draw_shape(screen)
+		inside_Shape.draw_shape(screen, (0, 0, 255)) #draw inside shape (and rotate it)
+		outside_Shape.draw_shape(screen) # draw outside shpae
 		pygame.display.update()
 		# clock.tick(500)
 		time.sleep(0.1/speed_slider.get_val())

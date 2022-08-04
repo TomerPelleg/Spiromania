@@ -4,7 +4,7 @@ import numpy as np
 from button import BoolButton
 import platform
 
-font = 'stsong'
+font = 'stsong' #this will come handy later..
 pygame.font.init()
 
 class InputShape:
@@ -23,10 +23,12 @@ class InputShape:
 	def onclick(self, x, y):
 		return self.xywh[0] < x < self.xywh[0] + self.xywh[2] and self.xywh[1] < y < self.xywh[1] + self.xywh[3]
 
-
+#class to get free drawn polygon from the user
+#maybe we took to much artistic freedom here
 def get_points(screen, ask_text=None, skip_chinese=False):
 	l = list()
 	if ask_text is not None:
+		#what text to print on the screen (as instructions)
 		# pygame.font.Font(r'C:\WINDOWS\FONTS\MSJH.TTC', 15).render(line, True, (0, 0, 0))
 		text_button = BoolButton(pos=(20, 20), size=(1300, 0), color="#FFFFFF", text=ask_text,
 										 fg_color="#000000", elevation=0)
@@ -41,19 +43,24 @@ def get_points(screen, ask_text=None, skip_chinese=False):
 				pygame.quit()
 				return
 			if event.type == pygame.MOUSEBUTTONDOWN:
+				#add point to polygon
 				l.append(pygame.mouse.get_pos())
 				if len(l) > 1:
 					pygame.draw.line(screen, (255, 0, 0), l[-1], l[-2])
 					pygame.display.update()
 			if (skip_chinese and len(l)) or event.type == pygame.KEYDOWN :
+				#enter is pressed - finished drawing
 				if (skip_chinese and len(l)) or event.key == pygame.K_RETURN: #use early return as feature!!!!
 					if len(l) > 2 or skip_chinese:
+						#enough points are drawn
 						pygame.draw.line(screen, (255, 0, 0), l[0], l[-1])
 						clear_button.draw(screen)
 						pygame.display.update()
 						return np.array(l, dtype=float)
 					else:
+						#drawn not enough point (less than 2)
 						if (platform.system() != 'Windows'):
+							#currenctly only windows support chinese text
 							creator = 'Torvalds' if (platform.system() == 'Linux') else 'Apple'
 							print("You don't use Windows, Bill Gates is sad. At least ", creator, " is happy.")
 							print("(BTW, we are shutting this app because of this. We will also shutter your window when you will sleep. Maybe then you will understand the value of windows.)")
@@ -81,6 +88,13 @@ struct Books {
 访问结构体成员
 
 定义完结构体积后接下来就是去访问它并给他赋值，为了访问一个结构体成员变量，我们可以使用成员操作符(.) 成员访问运算符被编码为结构变量名称和我们希望访问的结构成员之间的句点(.)如下所示的完整代码'''
+						#translation for the chinese:
+						# "The kingdom long united must divide, ling devided must unite"
+						# "I would rather betray the world, than let the world betray me" (Cao Cao)
+						# "Among men - Lu Bu, Aming steads - Red Hare"
+						# "O God, since you made Zhou Yu, why did you also create Zhuge Liang?"
+						# Those qoutes are from the Romance of Three kingdoms. The translation is not literal
+						# After this, there is an explanation in Chinese about forgetting ; in c
 						# font = pygame.font.SysFont(font, 190)
 						for i,line in enumerate(text.split('\n')):
 							# line = line.encode('utf-8')

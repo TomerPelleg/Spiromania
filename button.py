@@ -4,6 +4,8 @@ import pygame
 
 pygame.font.init()
 
+
+#Classes for clickable buttons
 class Button:
     def __init__(self, pos, size, color='#475F77', text="Hi", elevation = 5, fg_color='#000000', print_text = True, extra_parameters=[]):
         self.nice_font = pygame.font.SysFont('Calibri', 20)
@@ -33,10 +35,12 @@ class Button:
         self.text = new_text
         self.text_surface = self.nice_font.render(new_text, True, self.fg_color)
 
+    #re-draw the button
     def update_rect(self):
         self.rect = pygame.Rect((self.x, self.y-self.elevation), (self.width, self.height))
         self.down_rect = pygame.Rect((self.x, self.y), (self.width, self.height))
 
+    #return true if the button is clicked
     def check_clicked(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
             if pygame.mouse.get_pressed()[0]:
@@ -48,12 +52,14 @@ class Button:
     def click_func(self, screen):
         pass
 
+    #what to do if clicked
     def process_clicked(self, event, screen):
         if self.check_clicked(event):
             return self.click_func(screen)
         else:
             return None
 
+    #for nicer GUI, if the mouse is on the button it is pressed down
     def check_hover(self):
         mouse_pos_x, mouse_pos_y = pygame.mouse.get_pos()
         if self.down_rect.collidepoint(mouse_pos_x, mouse_pos_y):
@@ -62,6 +68,7 @@ class Button:
             self.elevation =5
         self.update_rect()
 
+    #draw the button
     def draw(self, screen):
         #callee must do pygame.display.update()
 
@@ -76,7 +83,7 @@ class Button:
         if(self.print_text):
             screen.blit(self.text_surface, self.text_surface.get_rect(center = self.down_rect.center))
 
-
+#button allowing to insert text by clicking on it
 class TextButton(Button):
     def click_func(self, screen):
         txt = []
@@ -106,6 +113,7 @@ class TextButton(Button):
                     self.draw(screen)
                     pygame.display.update()
 
+#button allowing to insert number by clicking on it
 class IntTextButton(Button):
     def check_clicked(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -145,7 +153,7 @@ class IntTextButton(Button):
                     self.draw(screen)
                     pygame.display.update()
 
-
+#button with 2 states - pressed and unpressed (changed when pressed)
 class BoolButton(Button):
     def extra_init_steps(self, extra_parameters):
         self.is_clicked = False
@@ -168,6 +176,7 @@ class BoolButton(Button):
         else:
             return False
 
+#slider
 class Slider:
     def __init__(self, pos, length, min_val=5, max_val=50, start_val = 5, circ_color='#FF0000', bar_color = '#354B5E', radius = 10, name = ""):
         self.nice_font = pygame.font.SysFont('Calibri MS', 20)
@@ -178,7 +187,7 @@ class Slider:
         self.max_val = max_val
         self.circ_color = circ_color
         self.bar_color = bar_color
-        self.val = start_val
+        self.val = max(min(start_val, max_val), min_val)
         self.name = name
         self.circle_center = (pos[0] + int((min(max(start_val, min_val), max_val) - min_val) * length / (max_val-min_val)), pos[1]+radius/2)
         self.radius = radius

@@ -14,17 +14,19 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 width, height = (pygame.display.Info().current_w, pygame.display.Info().current_h)
 start = np.asarray((width // 2, height // 2))
 
-
+#take list of 2D ponts and return them as function from [-PI,PI]->C
 def create_function(points):
 	xs = np.linspace(-1*PI, PI-2*PI/(np.shape(points)[0]), (np.shape(points)[0]))
 	ys = points[:,0] + points[:,1] * 1j
 	return xs, ys
 
-
+#the fourier transform needs both positive and negative coeffs, so we take 1 positive
+#coeff and then one negative coeff
 def num(k):
 	return (-1) ** k * (k + 1) // 2
 
-
+#input - function from [-PI,Pi]->C
+#output - first k fourier coefficients
 def calc_coeffs(xs, ys, k):
 	cfs = np.zeros(k, dtype=complex)
 	for n in range(k):
@@ -32,7 +34,12 @@ def calc_coeffs(xs, ys, k):
 		cfs[n] = sum(ys * y_cpy) / (len(xs) - 1)
 	return cfs
 
+#input - ps - point to draw
+#i - number of points to draw (takes the first i points from ps)
+#circle num - how many circles to draw (number of fourier coeffs to take)
+#output - draws on the screen the rotating circles
 def draw(ps, i, circle_num):
+	circle_num += 1 #we don't wraw the first circle
 	if(i <=10): #small number of points
 		return fourier_main()
 	ps = ps[:i] - start
@@ -43,7 +50,6 @@ def draw(ps, i, circle_num):
 	return fourier_main()
 
 def fourier_main():
-	print("here")
 	pygame.init()
 	global screen
 	screen = pygame.display.set_mode((width, height))
@@ -74,10 +80,12 @@ def fourier_main():
 				s_button.process_clicked(event, screen)
 			circle_num_slider.process_clicked(event, screen)
 			if event.type == pygame.QUIT:
+				#closed window
 				pygame.display.quit()
 				pygame.quit()
 				return False
 			if esc_button.get_val():
+				#return to main screen
 				return True
 
 			if event.type == pygame.KEYDOWN:
@@ -85,11 +93,13 @@ def fourier_main():
 					return draw(ps, i, circle_num)
 
 			if event.type == pygame.MOUSEBUTTONDOWN and is_drawing:
+				#start adding mouse trace to ps
 				ps = []
 				i = 0
 				add_to_arr = True
 
 			if event.type == pygame.MOUSEBUTTONUP:
+				#stop drawing
 				if len(ps[:i])<2:
 					add_to_arr = False
 					continue
@@ -99,6 +109,7 @@ def fourier_main():
 				pygame.display.update()
 
 			if add_to_arr:
+				#add mouse trace
 				pos = pygame.mouse.get_pos()
 				ps.append(pos)
 				for j in range(len(ps)):
@@ -109,6 +120,7 @@ def fourier_main():
 			circle_num = circle_num_slider.get_val()
 			is_drawing = draw_button.get_val()
 			if elephant_button.get_val():
+				#pre-drawed elephant is clicked
 				ps = np.load('true_elephant.npy')
 				last_elemnt = 1
 				for j in range(len(ps)):
@@ -117,6 +129,7 @@ def fourier_main():
 				return draw(ps, last_elemnt, circle_num)
 
 			if bird_button.get_val():
+				#pre drawed totro
 				ps = np.load('totoro.npy')
 				last_elemnt = 1
 				for j in range(len(ps)):
@@ -131,6 +144,3 @@ def fourier_main():
 
 if __name__ == '__main__':
 	fourier_main()
-
-	# todo: show the circles, not just the radii
-	# todo: buttons don't work in fourier

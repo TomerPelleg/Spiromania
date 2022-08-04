@@ -7,6 +7,7 @@ import poly_main
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 width, height = pygame.display.Info().current_w, pygame.display.Info().current_h
 
+# This code is self-explanatory
 fourier_button, old_spiro_button, polygons_button, buttons = [0]*4
 def init_buttons():
 	global fourier_button, old_spiro_button, polygons_button, exit_button, buttons

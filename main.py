@@ -5,4 +5,5 @@ import main_screen
 import fourier
 
 if __name__ == "__main__":
+    # main screen
     main_screen.main_screen_main()

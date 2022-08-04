@@ -14,6 +14,8 @@ from button import Button, TextButton, IntTextButton, BoolButton, Slider
 # https://stackoverflow.com/questions/70092416/pygame-efficient-way-to-draw-traceline-of-moving-object
 # also, pygame.display.update() can receive a rect to update instead of the entire screen
 
+#class to draw fourier circles
+
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREY = (100, 100, 100)
@@ -87,8 +89,10 @@ class Spiro:
 			sum_v = width // 2 + 1.j * (height // 2) + cfs[0] #cfs[0] is the offset - no need to draw
 
 			for q in cfs[1:]:
+				#calculate each circles new position
 				pygame.draw.lines(self.screen, BLUE, False, [rep(sum_v),rep(q+sum_v)], width=2)
 				if draw_circles_button.get_val():
+					#draw circles
 					pygame.draw.circle(self.screen, BLUE, rep(sum_v), abs(q), width=1)
 				sum_v += q
 			trace[i] = rep(sum_v)
@@ -96,8 +100,10 @@ class Spiro:
 			if i > 2:
 				for j in range(len(ps)):
 					if ps is not None and draw_original_button.get_val():
+						#draw original drawing
 						pygame.draw.rect(self.screen, (0, 0, 175), pygame.Rect(ps[j], (3, 3)))
 				for idx in range(int(max(0, i- 1.9 * math.pi / t_step)), i):
+					#draw trace
 					decay_factor = 0.5 + (idx - max(0, i- 1.9 * math.pi / t_step)) * 0.5 / (i - max(0, i- 1.9 * math.pi / t_step))
 					decay_red = int(decay_factor * 255)
 					pygame.draw.line(self.screen, (decay_red, 0, decay_red), trace[idx], trace[idx+1], width=4)
